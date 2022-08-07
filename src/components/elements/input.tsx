@@ -4,12 +4,25 @@ interface Props {
   type?: HTMLInputTypeAttribute
   placeholder?: string
   size?: string
+  className?: string
+  onChange?: (e: any) => void
 }
 
-const Input = ({ type = 'text', placeholder = '' }: Props) => {
+const Input = ({
+  type = 'text',
+  placeholder = '',
+  className,
+  size,
+  onChange
+}: Props) => {
   return (
-    <div>
-      <input className="h-20 w-100" type={type} placeholder={placeholder} />
+    <div className={`h-max w-max ${className}`}>
+      <input
+        className="h-9 w-80 border border-stone-300 border-solid rounded-sm pl-1"
+        onChange={onChange}
+        type={type}
+        placeholder={placeholder}
+      />
     </div>
   )
 }
