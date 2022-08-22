@@ -1,66 +1,45 @@
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { RootState } from '../store'
 
-const base = process.env.REACT_APP_SERVER_HOST || 'http://localhost:3000'
-
-export const getJson = async (url: string, token?: string) => {
-  const { data } = await axios.get(
-    base + url,
-    token
-      ? {
-          headers: { Authorization: token }
-        }
-      : {}
-  )
-  return data
+export const getJson = async (url: string) => {
+  return request({ url, method: 'get' })
 }
 
-export const postJson = async (url: string, body: any, token?: string) => {
-  const { data } = await axios.post(
-    base + url,
-    body,
-    token
-      ? {
-          headers: { Authorization: token }
-        }
-      : {}
-  )
-  return data
+export const postJson = async (url: string, data: any) => {
+  return request({ url, method: 'post', data })
 }
 
-export const putJson = async (url: string, body: any, token?: string) => {
-  const { data } = await axios.put(
-    base + url,
-    body,
-    token
-      ? {
-          headers: { Authorization: token }
-        }
-      : {}
-  )
-  return data
+export const putJson = async (url: string, data: any) => {
+  return request({ url, data, method: 'put' })
 }
 
-export const patchJson = async (url: string, body: any, token?: string) => {
-  const { data } = await axios.patch(
-    base + url,
-    body,
-    token
-      ? {
-          headers: { Authorization: token }
-        }
-      : {}
-  )
-  return data
+export const patchJson = async (url: string, data: any) => {
+  return request({ url, data, method: 'patch' })
 }
 
-export const deleteJson = async (url: string, token?: string) => {
-  const { data } = await axios.delete(
-    base + url,
-    token
-      ? {
-          headers: { Authorization: token }
-        }
-      : {}
-  )
-  return data
+export const deleteJson = async (url: string) => {
+  return request({ url, method: 'delete' })
 }
+
+const request = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_HOST,
+  timeout: 120000
+})
+
+request.interceptors.request.use((config) => {
+  const { access_token } = useSelector((state: RootState) => state.userSlice)
+  config.headers = { Authorization: access_token! }
+  return config
+})
+
+request.interceptors.response.use(
+  ({ data }) => {
+    toast.success('success')
+    return data
+  },
+  (err) => {
+    toast.error(err.message)
+  }
+)

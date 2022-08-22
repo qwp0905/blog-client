@@ -4,5 +4,8 @@
   "prettier.configPath": ".prettierrc",
   "editor.formatOnSave": true,
   "workbench.iconTheme": "material-icon-theme",
-  "material-icon-theme.activeIconPack": "react_redux"
+  "material-icon-theme.activeIconPack": "react_redux",
+  "auto-rename-tag.activationOnLanguage": ["*"],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }
