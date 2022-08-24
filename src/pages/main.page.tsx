@@ -1,8 +1,12 @@
-import { Button } from '@mui/material'
-import React, { useState } from 'react'
+import { Container } from '@mui/material'
+import React from 'react'
 
 const MainPage = () => {
-  return <div></div>
+  return (
+    <Container>
+      <div>hello</div>
+    </Container>
+  )
 }
 
 export default MainPage
