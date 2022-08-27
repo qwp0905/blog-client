@@ -1,24 +1,35 @@
-import { Box, Button, Grid, TextField } from '@mui/material'
+import { Box, Button, Grid, Stack, TextField } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogin = () => {
+    console.log(123123)
+  }
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" mt={30}>
-      <Box>
-        <Box mt={2}>
+    <Box display="flex" justifyContent="center" pt={30}>
+      <Stack spacing={2}>
+        <Box>
           <TextField label="Email" variant="outlined" />
         </Box>
-        <Box mt={2}>
+        <Box>
           <TextField label="Password" variant="outlined" />
         </Box>
-        <Box mt={10}>
-          <Button fullWidth={true} variant="contained" size="large">
+        <Box pt={4}>
+          <Button
+            fullWidth={true}
+            variant="contained"
+            size="large"
+            onClick={handleLogin}
+          >
             로그인
           </Button>
         </Box>
-        <Grid mt={2} container>
+        <Grid container>
           <Grid item xs={6}>
             <Box display="flex" justifyContent="center">
               <Button size="small" color="inherit">
@@ -38,7 +49,7 @@ const LoginPage = () => {
             </Box>
           </Grid>
         </Grid>
-      </Box>
+      </Stack>
     </Box>
   )
 }

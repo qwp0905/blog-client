@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
 import { RootState } from '../store'
 
 export const getJson = async (url: string) => {
@@ -29,17 +28,16 @@ const request = axios.create({
 })
 
 request.interceptors.request.use((config) => {
-  const { access_token } = useSelector((state: RootState) => state.userSlice)
+  const { access_token } = useSelector((state: RootState) => state.authSlice)
   config.headers = { Authorization: access_token! }
   return config
 })
 
 request.interceptors.response.use(
   ({ data }) => {
-    toast.success('success')
     return data
   },
   (err) => {
-    toast.error(err.message)
+    console.log(err.message)
   }
 )
