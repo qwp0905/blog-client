@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navigator from './components/navigator.component'
 import Toast from './components/toast.component'
+import LoginPage from './pages/login.page'
 import MainPage from './pages/main.page'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Navigator />
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
       <Toast />
