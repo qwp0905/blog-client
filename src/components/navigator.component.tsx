@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 import { Box } from '@mui/system'
 import React, { MouseEvent, useState } from 'react'
 import { useSelector } from 'react-redux'
