@@ -11,6 +11,7 @@ import React, { useState } from 'react'
 interface Props {
   state: string
   set: React.Dispatch<React.SetStateAction<string>>
+  enter?: () => unknown
   error?: boolean
   label?: string
 }
@@ -22,10 +23,14 @@ const Password = ({ state, set, label = 'Password', error = false }: Props) => {
     set(e.target.value)
   }
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      console.log(123132)
+    }
   }
 
   const id = crypto.randomUUID()
@@ -38,6 +43,7 @@ const Password = ({ state, set, label = 'Password', error = false }: Props) => {
         type={showPassword ? 'text' : 'password'}
         value={state}
         onChange={handlePassword}
+        onKeyDown={handleKeyDown}
         endAdornment={
           <InputAdornment position="end">
             <IconButton

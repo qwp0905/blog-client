@@ -1,3 +1,4 @@
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import {
   AppBar,
@@ -9,23 +10,45 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 import { Box } from '@mui/system'
-import React, { MouseEvent, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { AuthState } from '../store/slices/auth.slice'
+import { postJson } from '../services/request'
+import { AuthState, logout } from '../store/slices/auth.slice'
+import Confirm from './modals/confirm.modal'
+import { toast } from '../common/utils/popup'
 
 const Navigator = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const { access_token } = useSelector(AuthState)
+  const { access_token, id } = useSelector(AuthState)
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+
+  const [logoutModal, setLogoutModal] = useState(false)
+  const [isLogin, setIsLogin] = useState(!!access_token)
 
   const handleMenu = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)
   }
+
+  const handleLogoutModal = () => {
+    setLogoutModal(true)
+  }
+
+  const handleLogout = async () => {
+    await postJson('/user/logout')
+    dispatch(logout())
+    setAnchorEl(null)
+    setIsLogin(false)
+    toast.success('로그아웃되었습니다.')
+    return navigate('/')
+  }
+  useEffect(() => {
+    setIsLogin(!!access_token)
+  }, [access_token])
 
   return (
     <AppBar position="fixed" color="inherit">
@@ -53,7 +76,7 @@ const Navigator = () => {
               </Box>
             </Grid>
             <Grid item xs={1} display="flex" flexDirection="row-reverse">
-              {!access_token ? (
+              {!isLogin ? (
                 <Button color="inherit" onClick={() => navigate('/login')}>
                   Login
                 </Button>
@@ -67,13 +90,20 @@ const Navigator = () => {
           <Menu
             open={!!anchorEl}
             anchorEl={anchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             onClose={() => setAnchorEl(null)}
           >
             <MenuItem>Profile</MenuItem>
-            <MenuItem>My account</MenuItem>
+            <MenuItem onClick={handleLogoutModal}>Logout</MenuItem>
           </Menu>
         </Toolbar>
       </Box>
+      <Confirm
+        open={logoutModal}
+        onClose={() => setLogoutModal(false)}
+        message="로그아웃 하시겠습니까?"
+        fn={handleLogout}
+      />
     </AppBar>
   )
 }

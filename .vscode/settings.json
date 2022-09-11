@@ -7,5 +7,6 @@
   "material-icon-theme.activeIconPack": "react_redux",
   "auto-rename-tag.activationOnLanguage": ["*"],
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.tsserver.maxTsServerMemory": 6144
 }

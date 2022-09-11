@@ -12,26 +12,31 @@ import {
   Typography
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { ResponseBase } from '../common/interfaces/http.interface'
+import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
 import { postJson } from '../services/request'
-import { error, success } from '../store/slices/popup.slice'
+import { AuthState } from '../store/slices/auth.slice'
 
 const email_list = ['gmail.com', 'naver.com', 'hanmail.net']
 
 const SignUpPage = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const { access_token } = useSelector(AuthState)
 
   const [email, setEmail] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(true)
   const [domain, setDomain] = useState('')
+
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+
   const [isValidPassword, setIsValidPassword] = useState(true)
   const [isSamePassword, setIsSamePassword] = useState(true)
+
+  const [nickname, setNickname] = useState('')
+  const [isValidNickname, setIsValidNickname] = useState(true)
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -41,47 +46,62 @@ const SignUpPage = () => {
     setDomain(e.target.value)
   }
 
+  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value)
+  }
+
   const handleSignUp = async () => {
     if (!email) {
-      return dispatch(error('이메일을 입력해주세요.'))
+      return toast.error('이메일을 입력해주세요.')
     }
 
     if (!domain) {
-      return dispatch(error('이메일 주소를 선택해주세요.'))
+      return toast.error('이메일 주소를 선택해주세요.')
+    }
+
+    if (!nickname) {
+      return toast.error('닉네임을 입력해주세요.')
     }
 
     if (!password || !passwordConfirm) {
-      return dispatch(error('비밀번호를 입력해주세요.'))
+      return toast.error('비밀번호를 입력해주세요.')
     }
 
     if (validateEmail(email)) {
-      return dispatch(error('이메일을 확인해주세요.'))
+      return toast.error('이메일을 확인해주세요.')
+    }
+
+    if (validateNickname(nickname)) {
+      return toast.error('이메일을 확인해주세요.')
     }
 
     if (validatePassword(password)) {
-      return dispatch(error('비밀번호는 8자 이상으로 입력해주세요.'))
+      return toast.error('비밀번호는 8자 이상으로 입력해주세요.')
     }
 
     if (password !== passwordConfirm) {
-      return dispatch(error('비밀번호가 일치하지 않습니다.'))
+      return toast.error('비밀번호가 일치하지 않습니다.')
     }
     const new_email = email + '@' + domain
 
-    const response: ResponseBase<any> = await postJson('/user/sign', {
+    const response = await postJson('/user/create', {
       email: new_email,
-      password
+      password,
+      nickname
     })
 
-    if (response.result) {
-      dispatch(success('회원 가입에 성공했습니다.'))
-      return navigate('/')
-    } else {
-      dispatch(error(response.message))
+    if (response) {
+      navigate('/login')
+      return toast.success('회원 가입에 성공했습니다.')
     }
   }
 
   const validateEmail = (email: string) => {
     return !email.match(/^[0-9a-zA-Z]*$/)
+  }
+
+  const validateNickname = (nickname: string) => {
+    return !nickname.match(/^[0-9a-zA-Z]*$/)
   }
 
   const validatePassword = (password: string) => {
@@ -100,11 +120,21 @@ const SignUpPage = () => {
 
   useEffect(() => {
     setIsValidPassword(validatePassword(password))
-  })
+  }, [password])
+
+  useEffect(() => {
+    setIsValidNickname(validateNickname(nickname))
+  }, [nickname])
 
   useEffect(() => {
     setIsSamePassword(password !== passwordConfirm)
   }, [passwordConfirm])
+
+  useEffect(() => {
+    if (access_token) {
+      navigate('/')
+    }
+  }, [access_token])
 
   return (
     <Box display="flex" justifyContent="center" pt={20}>
@@ -143,10 +173,20 @@ const SignUpPage = () => {
           </Grid>
         </Grid>
         <Box>
+          <TextField
+            fullWidth
+            label="Nickname"
+            variant="outlined"
+            value={nickname}
+            onChange={handleNickname}
+            error={isValidNickname}
+          />
+        </Box>
+        <Box>
           <Password
             state={password}
             set={setPassword}
-            error={isValidPassword}
+            error={isValidPassword && password !== ''}
           />
         </Box>
         <Box>
@@ -158,12 +198,7 @@ const SignUpPage = () => {
           />
         </Box>
         <Box pt={4}>
-          <Button
-            fullWidth
-            onClick={handleSignUp}
-            variant="contained"
-            size="large"
-          >
+          <Button fullWidth onClick={handleSignUp} variant="contained" size="large">
             회원가입
           </Button>
         </Box>
