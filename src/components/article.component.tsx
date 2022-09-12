@@ -1,6 +1,5 @@
 import { Image } from '@mui/icons-material'
-import { Box, Button, Grid, Stack, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 
 interface Props {
   article: IArticle
@@ -15,8 +14,6 @@ export interface IArticle {
 }
 
 const Article = ({ article }: Props) => {
-  const navigate = useNavigate()
-
   return (
     <Box
       display="flex"

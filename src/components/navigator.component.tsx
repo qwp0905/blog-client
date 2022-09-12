@@ -23,7 +23,7 @@ const Navigator = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { access_token, id } = useSelector(AuthState)
+  const { access_token } = useSelector(AuthState)
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
