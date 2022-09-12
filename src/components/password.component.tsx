@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { EventNoteRounded, Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   FormControl,
   IconButton,
@@ -16,7 +16,7 @@ interface Props {
   label?: string
 }
 
-const Password = ({ state, set, label = 'Password', error = false }: Props) => {
+const Password = ({ state, set, label = 'Password', error = false, enter }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +28,8 @@ const Password = ({ state, set, label = 'Password', error = false }: Props) => {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') {
-      console.log(123132)
+    if (e.code === 'Enter' && enter) {
+      enter()
     }
   }
 

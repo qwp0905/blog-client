@@ -71,7 +71,7 @@ const Navigator = () => {
                   component="a"
                   href="/"
                 >
-                  HomePage
+                  블로그
                 </Typography>
               </Box>
             </Grid>

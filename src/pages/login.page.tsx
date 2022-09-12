@@ -70,7 +70,7 @@ const LoginPage = () => {
           />
         </Box>
         <Box>
-          <Password state={password} set={setPassword} />
+          <Password enter={handleLogin} state={password} set={setPassword} />
         </Box>
         <Box pt={4}>
           <Button fullWidth={true} variant="contained" size="large" onClick={handleLogin}>
