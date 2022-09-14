@@ -6,6 +6,7 @@ import Navigator from './components/navigator.component'
 import LoginPage from './pages/login.page'
 import MainPage from './pages/main.page'
 import SignUpPage from './pages/signup.page'
+import ArticlePage from './pages/article.page'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/article/*" element={<ArticlePage />} />
         </Routes>
       </BrowserRouter>
       <Popup />

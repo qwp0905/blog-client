@@ -15,7 +15,7 @@ const Popup = () => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={1500}
+      autoHideDuration={3000}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       onClose={handleClose}
     >

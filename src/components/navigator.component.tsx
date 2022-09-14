@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import {
   AppBar,
@@ -28,7 +28,6 @@ const Navigator = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   const [logoutModal, setLogoutModal] = useState(false)
-  const [isLogin, setIsLogin] = useState(!!access_token)
 
   const handleMenu = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget)
@@ -42,13 +41,9 @@ const Navigator = () => {
     await postJson('/user/logout')
     dispatch(logout())
     setAnchorEl(null)
-    setIsLogin(false)
     toast.success('로그아웃되었습니다.')
     return navigate('/')
   }
-  useEffect(() => {
-    setIsLogin(!!access_token)
-  }, [access_token])
 
   return (
     <AppBar position="fixed" color="inherit">
@@ -76,7 +71,7 @@ const Navigator = () => {
               </Box>
             </Grid>
             <Grid item xs={1} display="flex" flexDirection="row-reverse">
-              {!isLogin ? (
+              {!access_token ? (
                 <Button color="inherit" onClick={() => navigate('/login')}>
                   Login
                 </Button>

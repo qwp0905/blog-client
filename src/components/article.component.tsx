@@ -23,7 +23,7 @@ const Article = ({ article }: Props) => {
       <Stack spacing={1}>
         <Box
           component="a"
-          href={`/article/${article.id}`}
+          href={`/article?id=${article.id}`}
           sx={{
             width: 230,
             height: 180,
@@ -38,7 +38,7 @@ const Article = ({ article }: Props) => {
         <Box>
           <Typography
             component="a"
-            href={`/article/${article.id}`}
+            href={`/article?id=${article.id}`}
             sx={{
               textDecoration: 'none',
               color: 'inherit'
