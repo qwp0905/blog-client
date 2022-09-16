@@ -8,7 +8,7 @@ const MainPage = () => {
   const onCreated = async () => {
     const result: IArticle[] = await getJson('/article')
     if (result) {
-      setArticles([...result])
+      setArticles([...articles, ...result])
     }
   }
 

@@ -33,9 +33,9 @@ const ArticlePage = () => {
         {(detail && (
           <Stack spacing={1}>
             <Box>{detail.title}</Box>
-            <Box>{detail.nickname}</Box>
             <Box>{detail.updated_at}</Box>
             <Markdown content={detail.content} />
+            <Box>{detail.nickname}</Box>
           </Stack>
         )) || <Box></Box>}
       </Container>
