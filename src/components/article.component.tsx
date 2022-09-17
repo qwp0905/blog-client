@@ -1,5 +1,6 @@
 import { Image } from '@mui/icons-material'
-import { Box, Button, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
+import Tag from './tag.component'
 
 interface Props {
   article: IArticle
@@ -52,23 +53,8 @@ const Article = ({ article }: Props) => {
         <Grid container>
           {article.tags.map((tag) => {
             return (
-              <Grid item ml={0.5} mr={0.5}>
-                <label htmlFor={tag}>
-                  <Box
-                    borderRadius={1}
-                    bgcolor="lightgrey"
-                    display="flex"
-                    justifyContent="center"
-                    pr={0.5}
-                    pl={0.5}
-                    sx={{ ':hover': { cursor: 'pointer', opacity: 0.8 } }}
-                  >
-                    <Typography fontSize={12}>{tag}</Typography>
-                  </Box>{' '}
-                </label>
-                <Button id={tag} sx={{ display: 'none' }}>
-                  {tag}
-                </Button>
+              <Grid item mr={1}>
+                <Tag tag={tag} size="xs" />
               </Grid>
             )
           })}

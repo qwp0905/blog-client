@@ -1,6 +1,7 @@
-import { Box, Container, Stack } from '@mui/material'
+import { Box, Container, Grid, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Markdown from '../components/markdown.component'
+import Tag from '../components/tag.component'
 import { getJson } from '../services/request'
 
 interface ArticleDetail {
@@ -10,6 +11,7 @@ interface ArticleDetail {
   title: string
   content: string
   updated_at: string
+  tags: string[]
 }
 
 const ArticlePage = () => {
@@ -36,6 +38,15 @@ const ArticlePage = () => {
             <Box>{detail.updated_at}</Box>
             <Markdown content={detail.content} />
             <Box>{detail.nickname}</Box>
+            <Grid container>
+              {detail.tags.map((tag) => {
+                return (
+                  <Grid item mr={1}>
+                    <Tag tag={tag} size="mn" />
+                  </Grid>
+                )
+              })}
+            </Grid>
           </Stack>
         )) || <Box></Box>}
       </Container>
