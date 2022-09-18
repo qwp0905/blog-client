@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Divider, Grid, List, ListItem, Stack } from '@mui/material'
+import { Box, Container, Divider, List, ListItem } from '@mui/material'
 import Article, { IArticle } from '../components/article.component'
 import { getJson } from '../services/request'
 
@@ -22,8 +22,8 @@ const MainPage = () => {
         <List>
           {articles.map((e, i) => {
             return (
-              <Box>
-                <ListItem key={i}>
+              <Box key={`${i}`}>
+                <ListItem>
                   <Article article={e} />
                 </ListItem>
                 <Divider />

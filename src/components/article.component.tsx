@@ -1,4 +1,5 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import Tag from './tag.component'
 
 interface Props {
@@ -16,23 +17,30 @@ export interface IArticle {
 }
 
 const Article = ({ article }: Props) => {
+  const navigate = useNavigate()
+
   const calculateDate = (date: string) => {
     const date_num = +new Date(date)
     const now = +new Date()
     return Math.floor((now - date_num) / (24 * 60 * 60 * 1000))
   }
+
   return (
-    <Box border="1px solid" width="100%" padding={1}>
+    <Box width="100%" padding={1}>
       <Grid container spacing={1} columns={18}>
         <Grid xs={18} item>
-          <Typography
-            sx={{ textDecoration: 'none', color: 'inherit' }}
-            component="a"
-            variant="h5"
-            href={`/article?id=${article.id}`}
+          <Box
+            component="label"
+            htmlFor={`${article.id}`}
+            sx={{ width: '100%', ':hover': { cursor: 'pointer', opacity: 0.7 } }}
           >
-            {article.title}
-          </Typography>
+            <Typography variant="h5">{article.title}</Typography>
+          </Box>
+          <Button
+            sx={{ display: 'none' }}
+            id={`${article.id}`}
+            onClick={() => navigate(`/article?id=${article.id}`)}
+          />
         </Grid>
         <Grid xs={18} item>
           <Grid container>
