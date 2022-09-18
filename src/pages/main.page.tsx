@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Grid, Stack } from '@mui/material'
+import { Box, Container, Divider, Grid, List, ListItem, Stack } from '@mui/material'
 import Article, { IArticle } from '../components/article.component'
 import { getJson } from '../services/request'
 
@@ -19,17 +19,18 @@ const MainPage = () => {
   return (
     <Container maxWidth="md">
       <Box pt={10}>
-        <Stack spacing={2}>
-          <Grid container spacing={2}>
-            {articles.map((e, i) => {
-              return (
-                <Grid key={i} xs={12} md={4} display="flex" justifyContent="center" item>
+        <List>
+          {articles.map((e, i) => {
+            return (
+              <Box>
+                <ListItem key={i}>
                   <Article article={e} />
-                </Grid>
-              )
-            })}
-          </Grid>
-        </Stack>
+                </ListItem>
+                <Divider />
+              </Box>
+            )
+          })}
+        </List>
       </Box>
     </Container>
   )

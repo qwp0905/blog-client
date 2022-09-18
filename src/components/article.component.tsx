@@ -1,5 +1,4 @@
-import { Image } from '@mui/icons-material'
-import { Box, Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import Tag from './tag.component'
 
 interface Props {
@@ -17,64 +16,42 @@ export interface IArticle {
 }
 
 const Article = ({ article }: Props) => {
+  const calculateDate = (date: string) => {
+    const date_num = +new Date(date)
+    const now = +new Date()
+    return Math.floor((now - date_num) / (24 * 60 * 60 * 1000))
+  }
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      sx={{ width: 250, height: 280, border: '1px solid black' }}
-    >
-      <Stack spacing={1}>
-        <Box
-          component="a"
-          href={`/article?id=${article.id}`}
-          sx={{
-            width: 230,
-            height: 180,
-            border: '1px solid black',
-            mt: 1,
-            textDecoration: 'none',
-            color: 'inherit'
-          }}
-        >
-          <Image></Image>
-        </Box>
-        <Box>
+    <Box border="1px solid" width="100%" padding={1}>
+      <Grid container spacing={1} columns={18}>
+        <Grid xs={18} item>
           <Typography
+            sx={{ textDecoration: 'none', color: 'inherit' }}
             component="a"
+            variant="h5"
             href={`/article?id=${article.id}`}
-            sx={{
-              textDecoration: 'none',
-              color: 'inherit'
-            }}
           >
             {article.title}
           </Typography>
-        </Box>
-        <Grid container>
-          {article.tags.map((tag) => {
-            return (
-              <Grid item mr={1}>
-                <Tag tag={tag} size="xs" />
-              </Grid>
-            )
-          })}
         </Grid>
-        <Grid container>
-          <Grid item xs={7} display="flex" flexDirection="column" justifyContent="center">
-            <Typography fontSize={13}>{article.nickname}</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={5}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="flex-end"
-          >
-            <Typography fontSize={1}>{article.created_at}</Typography>
+        <Grid xs={18} item>
+          <Grid container>
+            {article.tags.map((tag, i) => {
+              return (
+                <Grid item key={i} mr={1}>
+                  <Tag tag={tag} size="mn" />
+                </Grid>
+              )
+            })}
           </Grid>
         </Grid>
-      </Stack>
+        <Grid xs={1.5} item>
+          {`${calculateDate(article.updated_at)}일 전`}
+        </Grid>
+        <Grid xs={1.5} item>
+          {article.nickname}
+        </Grid>
+      </Grid>
     </Box>
   )
 }
