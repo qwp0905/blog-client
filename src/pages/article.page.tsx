@@ -39,9 +39,9 @@ const ArticlePage = () => {
             <Markdown content={detail.content} />
             <Box>{detail.nickname}</Box>
             <Grid container>
-              {detail.tags.map((tag) => {
+              {detail.tags.map((tag, i) => {
                 return (
-                  <Grid item mr={1}>
+                  <Grid item mr={1} key={i}>
                     <Tag tag={tag} size="mn" />
                   </Grid>
                 )

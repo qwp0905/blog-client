@@ -3,32 +3,36 @@ import { Box, Divider, Grid, List, ListItem, useMediaQuery } from '@mui/material
 import Article, { IArticle } from '../components/article.component'
 import { getJson } from '../services/request'
 import SideBar from '../components/sidebar.component'
-import { useSelector } from 'react-redux'
-import { AuthState } from '../store/slices/auth.slice'
 
 const MainPage = () => {
-  const { id: user_id } = useSelector(AuthState)
+  const url = new URL(window.location.href)
+  const user_id = url.searchParams.get('id') as string
 
   const [articles, setArticles] = useState<IArticle[]>([])
+  const [target, setTarget] = useState<string | null>(null)
 
   const is_pc = useMediaQuery('(min-width: 900px)')
 
-  const onCreated = async () => {
-    const response: IArticle[] = await getJson('/article')
+  const getArticles = async (page: number, tag?: string) => {
+    const response: IArticle[] = await getJson(
+      `/article?page=${page}` +
+        ((tag && `&tag=${tag}`) || '') +
+        ((user_id && `&id=${user_id}`) || '')
+    )
     if (response) {
-      setArticles([...articles, ...response])
+      setArticles([...response])
     }
   }
 
   useEffect(() => {
-    onCreated()
-  }, [])
+    getArticles(1, target || undefined)
+  }, [target])
 
   return (
     <Box pt={10}>
       <Grid container>
         <Grid item md={2}>
-          {user_id && is_pc ? <SideBar user_id={user_id} /> : null}
+          {is_pc ? <SideBar target={setTarget} user_id={user_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <List>
