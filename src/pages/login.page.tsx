@@ -55,7 +55,7 @@ const LoginPage = () => {
   }, [access_token])
 
   return (
-    <Box display="flex" justifyContent="center" pt={20}>
+    <Box display="flex" justifyContent="center" pt={12}>
       <Stack spacing={2} minWidth={350}>
         <Box display="flex" justifyContent="center" mb={5}>
           <Typography variant="h6">로그인</Typography>
@@ -87,7 +87,7 @@ const LoginPage = () => {
           </Grid>
           <Grid item xs={6}>
             <Box display="flex" justifyContent="center">
-              <Button size="small" color="inherit" onClick={() => navigate('/signup')}>
+              <Button size="small" color="inherit" LinkComponent="a" href="/signup">
                 회원가입
               </Button>
             </Box>

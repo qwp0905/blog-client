@@ -1,5 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Box, Grid, Typography } from '@mui/material'
 import Tag from './tag.component'
 
 interface Props {
@@ -17,8 +16,6 @@ export interface IArticle {
 }
 
 const Article = ({ article }: Props) => {
-  const navigate = useNavigate()
-
   const calculateDate = (date: string) => {
     const date_num = +new Date(date)
     const now = +new Date()
@@ -30,17 +27,20 @@ const Article = ({ article }: Props) => {
       <Grid container spacing={1} columns={18}>
         <Grid xs={18} item>
           <Box
-            component="label"
-            htmlFor={`${article.id}`}
-            sx={{ width: '100%', ':hover': { cursor: 'pointer', opacity: 0.7 } }}
+            component="a"
+            href={`/article?id=${article.id}`}
+            sx={{
+              width: '100%',
+              ':hover': {
+                cursor: 'pointer',
+                opacity: 0.7
+              },
+              textDecoration: 'none',
+              color: 'inherit'
+            }}
           >
             <Typography variant="h5">{article.title}</Typography>
           </Box>
-          <Button
-            sx={{ display: 'none' }}
-            id={`${article.id}`}
-            onClick={() => navigate(`/article?id=${article.id}`)}
-          />
         </Grid>
         <Grid xs={18} item>
           <Grid container>
@@ -53,11 +53,21 @@ const Article = ({ article }: Props) => {
             })}
           </Grid>
         </Grid>
-        <Grid xs={1.5} item>
-          {`${calculateDate(article.updated_at)}일 전`}
+        <Grid xs={6} md={3} lg={1.5} item>
+          <Typography>{`${calculateDate(article.updated_at)}일 전`}</Typography>
         </Grid>
-        <Grid xs={1.5} item>
-          {article.nickname}
+        <Grid xs={6} md={3} lg={1.5} item>
+          <Typography
+            component="a"
+            href={`/?id=${article.user_id}`}
+            sx={{
+              color: 'inherit',
+              textDecoration: 'none',
+              ':hover': { cursor: 'pointer', opacity: 0.7 }
+            }}
+          >
+            {article.nickname}
+          </Typography>
         </Grid>
       </Grid>
     </Box>

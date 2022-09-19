@@ -7,9 +7,9 @@ import SideBar from '../components/sidebar.component'
 const MainPage = () => {
   const url = new URL(window.location.href)
   const user_id = url.searchParams.get('id') as string
+  const tag = url.searchParams.get('tag') as string
 
   const [articles, setArticles] = useState<IArticle[]>([])
-  const [target, setTarget] = useState<string | null>(null)
 
   const is_pc = useMediaQuery('(min-width: 900px)')
 
@@ -25,20 +25,20 @@ const MainPage = () => {
   }
 
   useEffect(() => {
-    getArticles(1, target || undefined)
-  }, [target])
+    getArticles(1, tag || undefined)
+  }, [])
 
   return (
-    <Box pt={10}>
+    <Box>
       <Grid container>
         <Grid item md={2}>
-          {is_pc ? <SideBar target={setTarget} user_id={user_id} /> : null}
+          {is_pc ? <SideBar user_id={user_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <List>
             {articles.map((e, i) => {
               return (
-                <Box key={`${i}`}>
+                <Box key={i}>
                   <ListItem>
                     <Article article={e} />
                   </ListItem>
@@ -48,7 +48,7 @@ const MainPage = () => {
             })}
           </List>
         </Grid>
-        <Grid item md={2}></Grid>
+        <Grid item md={2} />
       </Grid>
     </Box>
   )

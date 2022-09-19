@@ -4,7 +4,6 @@ import { getJson } from '../services/request'
 
 interface Props {
   user_id?: string
-  target: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 interface TagResponse {
@@ -12,7 +11,7 @@ interface TagResponse {
   quantity: number
 }
 
-const SideBar = ({ user_id, target: setTarget }: Props) => {
+const SideBar = ({ user_id }: Props) => {
   const [tags, setTags] = useState<TagResponse[]>([])
 
   const onCreated = async () => {
@@ -20,10 +19,6 @@ const SideBar = ({ user_id, target: setTarget }: Props) => {
       `/article/tags` + ((user_id && `?id=${user_id}`) || '')
     )
     setTags(response || [])
-  }
-
-  const handleClick = (tag?: string) => {
-    setTarget(tag || null)
   }
 
   useEffect(() => {
@@ -34,14 +29,26 @@ const SideBar = ({ user_id, target: setTarget }: Props) => {
     <Box>
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => handleClick()}>
-            <ListItemText primary={`전체보기`} />
+          <ListItemButton
+            LinkComponent="a"
+            href={`/` + ((user_id && `?id=${user_id}`) || '')}
+          >
+            <ListItemText
+              primary={`전체 (${tags.reduce((a, c) => a + c.quantity, 0)})`}
+            />
           </ListItemButton>
         </ListItem>
         {tags.map(({ tag_name, quantity }, i) => {
           return (
             <ListItem key={i} disablePadding>
-              <ListItemButton onClick={() => handleClick(tag_name)}>
+              <ListItemButton
+                LinkComponent="a"
+                href={
+                  `/` +
+                  ((tag_name && `?tag=${tag_name}`) || '') +
+                  ((user_id && `?id=${user_id}`) || '')
+                }
+              >
                 <ListItemText primary={`${tag_name} (${quantity})`} />
               </ListItemButton>
             </ListItem>

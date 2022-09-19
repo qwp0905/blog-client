@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 interface Props {
   tag: string
@@ -29,23 +29,26 @@ const Tag = ({ tag, size = 'mn' }: Props) => {
   }
 
   return (
-    <Box>
-      <label htmlFor={tag}>
-        <Box
-          borderRadius={1}
-          bgcolor="lightgrey"
-          display="flex"
-          justifyContent="center"
-          pr={padding_left_right}
-          pl={padding_left_right}
-          pt={padding_top_bottom}
-          pb={padding_top_bottom}
-          sx={{ ':hover': { cursor: 'pointer', opacity: 0.8 } }}
-        >
-          <Typography fontSize={font_size}>{tag}</Typography>
-        </Box>
-      </label>
-      <Button id={tag} sx={{ display: 'none' }} />
+    <Box
+      borderRadius={1}
+      display="flex"
+      bgcolor="ButtonHighlight"
+      justifyContent="center"
+      pr={padding_left_right}
+      pl={padding_left_right}
+      pt={padding_top_bottom}
+      pb={padding_top_bottom}
+      sx={{
+        ':hover': { cursor: 'pointer', opacity: 0.8 },
+        textDecoration: 'none',
+        color: 'inherit'
+      }}
+      component="a"
+      href={`/?tag=${tag}`}
+    >
+      <Typography color="primary" fontSize={font_size}>
+        {tag}
+      </Typography>
     </Box>
   )
 }

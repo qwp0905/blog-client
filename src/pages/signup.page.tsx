@@ -137,7 +137,7 @@ const SignUpPage = () => {
   }, [access_token])
 
   return (
-    <Box display="flex" justifyContent="center" pt={20}>
+    <Box display="flex" justifyContent="center" pt={12}>
       <Stack spacing={2} minWidth={350}>
         <Box display="flex" justifyContent="center" mb={5}>
           <Typography variant="h6">회원가입</Typography>

@@ -33,19 +33,19 @@ const Confirm = ({ open, message, onClose, fn }: Props) => {
             <Typography>{message}</Typography>
           </Box>
           <Grid container columns={24}>
-            <Grid item xs={5}></Grid>
+            <Grid item xs={5} />
             <Grid item xs={6}>
               <Button variant="contained" onClick={handleConfirm} fullWidth>
                 예
               </Button>
             </Grid>
-            <Grid item xs={2}></Grid>
+            <Grid item xs={2} />
             <Grid item xs={6}>
               <Button onClick={onClose} variant="outlined" fullWidth>
                 아니오
               </Button>
             </Grid>
-            <Grid item xs={5}></Grid>
+            <Grid item xs={5} />
           </Grid>
         </Stack>
       </Box>
