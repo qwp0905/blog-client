@@ -1,5 +1,7 @@
-import { Box, Grid, InputBase, Stack, Typography } from '@mui/material'
+import { Box, Grid, IconButton, InputBase, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import ImageIcon from '@mui/icons-material/Image'
+import { toast } from '../common/utils/popup'
 
 const WritePage = () => {
   const [title, setTitle] = useState('')
@@ -23,9 +25,7 @@ const WritePage = () => {
     if (!e.nativeEvent.isComposing) {
       if (e.code === 'Enter') {
         e.preventDefault()
-        if (!~tags.indexOf(tag_temp)) {
-          setTags([...tags, tag_temp])
-        }
+        setTags(Array.from(new Set([...tags, tag_temp])))
         setTagTemp('')
       } else if (e.code === 'Backspace' && tag_temp === '') {
         e.preventDefault()
@@ -35,7 +35,24 @@ const WritePage = () => {
   }
 
   const tapKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(e.code)
+    if (!e.nativeEvent.isComposing) {
+      if (e.code === 'Tab') {
+        e.preventDefault()
+        setContent(content + '  ')
+      }
+    }
+  }
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const image = e.target.files![0]
+    if (!image.type.match(/^image/)) {
+      toast.error('올바른 형식의 이미지를 업로드해주세요.')
+    } else if (image.size > 10 * 1000 * 1000) {
+      toast.error('10MB 이하의 이미지를 업로드해주세요.')
+    } else {
+      console.log('업로드!!!')
+    }
+    e.target.files = null
   }
 
   return (
@@ -79,6 +96,19 @@ const WritePage = () => {
                 />
               </Grid>
             </Grid>
+            <Grid container>
+              <Grid item>
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  component="label"
+                  htmlFor="image-upload"
+                >
+                  <ImageIcon />
+                </IconButton>
+                <input id="image-upload" type="file" hidden onChange={handleImage} />
+              </Grid>
+            </Grid>
             <InputBase
               placeholder="내용을 입력하세요."
               onChange={handleContent}
@@ -86,6 +116,7 @@ const WritePage = () => {
               multiline
               rows={20}
               sx={{ pt: 2 }}
+              onKeyDown={tapKey}
             />
           </Stack>
         </Grid>
