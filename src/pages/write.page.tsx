@@ -1,13 +1,26 @@
-import { Box, Grid, IconButton, InputBase, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputBase,
+  Stack,
+  Typography
+} from '@mui/material'
 import React, { useState } from 'react'
 import ImageIcon from '@mui/icons-material/Image'
 import { toast } from '../common/utils/popup'
+import Confirm from '../components/modals/confirm.modal'
+import { useNavigate } from 'react-router-dom'
 
 const WritePage = () => {
+  const navigate = useNavigate()
+
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [tag_temp, setTagTemp] = useState('')
   const [tags, setTags] = useState<string[]>([])
+  const [cancelModal, setCancelModal] = useState(false)
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -43,16 +56,25 @@ const WritePage = () => {
     }
   }
 
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files![0]
     if (!image.type.match(/^image/)) {
       toast.error('올바른 형식의 이미지를 업로드해주세요.')
     } else if (image.size > 10 * 1000 * 1000) {
       toast.error('10MB 이하의 이미지를 업로드해주세요.')
     } else {
-      console.log('업로드!!!')
+      const form = new FormData()
+      form.append('file', image)
     }
     e.target.files = null
+  }
+
+  const handleCancelModal = () => {
+    setCancelModal(true)
+  }
+
+  const handleCancel = () => {
+    return navigate('/')
   }
 
   return (
@@ -63,7 +85,7 @@ const WritePage = () => {
           <Stack spacing={1}>
             <InputBase
               placeholder="제목을 입력하세요."
-              sx={{ fontSize: 30 }}
+              sx={{ fontSize: 30, padding: 1 }}
               onChange={handleTitle}
               value={title}
             />
@@ -86,13 +108,15 @@ const WritePage = () => {
                   </Box>
                 </Grid>
               ))}
-              <Grid item>
+              <Grid item sx={{ width: '100%' }}>
                 <InputBase
                   placeholder="태그를 입력하세요."
                   value={tag_temp}
                   onChange={handleTag}
                   onKeyDown={addTag}
                   multiline
+                  fullWidth
+                  sx={{ padding: 1 }}
                 />
               </Grid>
             </Grid>
@@ -115,13 +139,27 @@ const WritePage = () => {
               value={content}
               multiline
               rows={20}
-              sx={{ pt: 2 }}
+              sx={{ padding: 1 }}
               onKeyDown={tapKey}
             />
+            <Box display="flex" flexDirection="row-reverse">
+              <Button variant="outlined" onClick={handleCancelModal}>
+                취소
+              </Button>
+              <Button variant="contained" sx={{ mr: 1 }}>
+                제출
+              </Button>
+            </Box>
           </Stack>
         </Grid>
         <Grid item md={3} />
       </Grid>
+      <Confirm
+        open={cancelModal}
+        onClose={() => setCancelModal(false)}
+        message="취소하시겠습니까?"
+        fn={handleCancel}
+      />
     </Box>
   )
 }

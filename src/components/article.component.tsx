@@ -1,4 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material'
+import { calculateDate } from '../common/utils/moment'
 import Tag from './tag.component'
 
 interface Props {
@@ -10,18 +11,12 @@ export interface IArticle {
   user_id: number
   nickname: string
   title: string
-  created_at: string
-  updated_at: string
+  created_at: Date
+  updated_at: Date
   tags: string[]
 }
 
 const Article = ({ article }: Props) => {
-  const calculateDate = (date: string) => {
-    const date_num = +new Date(date)
-    const now = +new Date()
-    return Math.floor((now - date_num) / (24 * 60 * 60 * 1000))
-  }
-
   return (
     <Box width="100%" padding={1}>
       <Grid container spacing={1} columns={18}>
@@ -54,7 +49,7 @@ const Article = ({ article }: Props) => {
           </Grid>
         </Grid>
         <Grid xs={6} md={3} lg={1.5} item>
-          <Typography>{`${calculateDate(article.updated_at)}일 전`}</Typography>
+          <Typography>{calculateDate(article.updated_at)}</Typography>
         </Grid>
         <Grid xs={6} md={3} lg={1.5} item>
           <Typography

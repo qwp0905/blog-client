@@ -21,31 +21,31 @@ const Confirm = ({ open, message, onClose, fn }: Props) => {
         bgcolor="background.paper"
         top="50%"
         left="50%"
-        width="20rem"
+        width="15rem"
         sx={{ transform: 'translate(-50%, -50%)' }}
         display="flex"
         justifyContent="center"
-        pt={3}
-        pb={3}
+        pt={4}
+        pb={4}
       >
         <Stack spacing={3} width="100%">
           <Box display="flex" justifyContent="center">
             <Typography>{message}</Typography>
           </Box>
           <Grid container columns={24}>
-            <Grid item xs={5} />
-            <Grid item xs={6}>
+            <Grid item xs={3.5} />
+            <Grid item xs={8}>
               <Button variant="contained" onClick={handleConfirm} fullWidth>
                 예
               </Button>
             </Grid>
-            <Grid item xs={2} />
-            <Grid item xs={6}>
+            <Grid item xs={1} />
+            <Grid item xs={8}>
               <Button onClick={onClose} variant="outlined" fullWidth>
                 아니오
               </Button>
             </Grid>
-            <Grid item xs={5} />
+            <Grid item xs={3.5} />
           </Grid>
         </Stack>
       </Box>
