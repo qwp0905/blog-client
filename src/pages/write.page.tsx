@@ -12,6 +12,7 @@ import ImageIcon from '@mui/icons-material/Image'
 import { toast } from '../common/utils/popup'
 import Confirm from '../components/modals/confirm.modal'
 import { useNavigate } from 'react-router-dom'
+import { formJson, postJson } from '../services/request'
 
 const WritePage = () => {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ const WritePage = () => {
   const [tag_temp, setTagTemp] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [cancelModal, setCancelModal] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -60,11 +62,15 @@ const WritePage = () => {
     const image = e.target.files![0]
     if (!image.type.match(/^image/)) {
       toast.error('올바른 형식의 이미지를 업로드해주세요.')
-    } else if (image.size > 10 * 1000 * 1000) {
+    } else if (image.size > 10 * 1024 * 1024) {
       toast.error('10MB 이하의 이미지를 업로드해주세요.')
     } else {
-      const form = new FormData()
-      form.append('file', image)
+      const file = new FormData()
+      file.append('image', image)
+      const response = await formJson('/upload', file)
+      if (response) {
+        setContent(content + '\n' + `![${new Date().toISOString()}](${response})`)
+      }
     }
     e.target.files = null
   }
@@ -75,6 +81,13 @@ const WritePage = () => {
 
   const handleCancel = () => {
     return navigate('/')
+  }
+
+  const submit = async () => {
+    const response = await postJson('/article', { title, tags, content })
+    if (response) {
+      navigate('/')
+    }
   }
 
   return (
@@ -89,15 +102,15 @@ const WritePage = () => {
               onChange={handleTitle}
               value={title}
             />
-            <Grid container rowSpacing={1}>
+            <Grid container>
               {tags.map((t, i) => (
-                <Grid item key={i}>
+                <Grid item key={i} display="flex" justifyContent="center">
                   <Box
                     borderRadius={1}
                     display="flex"
                     justifyContent="center"
+                    alignItems="center"
                     bgcolor="ButtonHighlight"
-                    p={0.3}
                     pr={0.9}
                     pl={0.9}
                     mr={1}
@@ -108,7 +121,7 @@ const WritePage = () => {
                   </Box>
                 </Grid>
               ))}
-              <Grid item sx={{ width: '100%' }}>
+              <Grid item>
                 <InputBase
                   placeholder="태그를 입력하세요."
                   value={tag_temp}
@@ -141,12 +154,13 @@ const WritePage = () => {
               rows={20}
               sx={{ padding: 1 }}
               onKeyDown={tapKey}
+              disabled={imageLoaded}
             />
             <Box display="flex" flexDirection="row-reverse">
               <Button variant="outlined" onClick={handleCancelModal}>
                 취소
               </Button>
-              <Button variant="contained" sx={{ mr: 1 }}>
+              <Button variant="contained" onClick={submit} sx={{ mr: 1 }}>
                 제출
               </Button>
             </Box>

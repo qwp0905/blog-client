@@ -11,7 +11,7 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     const access_token = store.getState().authSlice?.access_token
-    config.headers = { Authorization: `Bearer ${access_token}` }
+    config.headers = { ...config.headers, Authorization: `Bearer ${access_token}` }
     return config
   },
   (err) => {
@@ -52,4 +52,13 @@ export const patchJson = async (url: string, data: any = {}): Promise<any> => {
 
 export const deleteJson = async (url: string): Promise<any> => {
   return request({ url, method: 'delete' })
+}
+
+export const formJson = async (url: string, data: FormData) => {
+  return request({
+    url,
+    data,
+    headers: { 'Content-Type': 'multipart/form-data' },
+    method: 'post'
+  })
 }
