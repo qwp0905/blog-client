@@ -59,9 +59,9 @@ const WritePage = () => {
   }
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files?.length) {
       const image = e.target.files[0]
-      if (!image.type.match(/^image/)) {
+      if (!image?.type.match(/^image/)) {
         toast.error('올바른 형식의 이미지를 업로드해주세요.')
       } else if (image.size > 10 * 1024 * 1024) {
         toast.error('10MB 이하의 이미지를 업로드해주세요.')
@@ -137,7 +137,7 @@ const WritePage = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container flexDirection="row-reverse">
               <Grid item>
                 <IconButton
                   size="small"
