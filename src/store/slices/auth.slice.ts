@@ -19,7 +19,7 @@ const authSlice = createSlice({
     login(state: State, { payload }: PayloadAction<State>) {
       Object.assign(state, payload)
     },
-    logout(state: State) {
+    logout() {
       return initialState
     }
   }

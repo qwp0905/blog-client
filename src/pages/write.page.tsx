@@ -22,7 +22,7 @@ const WritePage = () => {
   const [tag_temp, setTagTemp] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [cancelModal, setCancelModal] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(true)
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -59,20 +59,24 @@ const WritePage = () => {
   }
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const image = e.target.files![0]
-    if (!image.type.match(/^image/)) {
-      toast.error('올바른 형식의 이미지를 업로드해주세요.')
-    } else if (image.size > 10 * 1024 * 1024) {
-      toast.error('10MB 이하의 이미지를 업로드해주세요.')
-    } else {
-      const file = new FormData()
-      file.append('image', image)
-      const response = await formJson('/upload', file)
-      if (response) {
-        setContent(content + '\n' + `![${new Date().toISOString()}](${response})`)
+    if (e.target.files) {
+      const image = e.target.files[0]
+      if (!image.type.match(/^image/)) {
+        toast.error('올바른 형식의 이미지를 업로드해주세요.')
+      } else if (image.size > 10 * 1024 * 1024) {
+        toast.error('10MB 이하의 이미지를 업로드해주세요.')
+      } else {
+        setImageLoaded(false)
+        const file = new FormData()
+        file.append('image', image)
+        const response = await formJson('/upload', file)
+        if (response) {
+          setContent(content + '\n' + `![${new Date().toISOString()}](${response})`)
+        }
+        setImageLoaded(true)
       }
+      e.target.files = null
     }
-    e.target.files = null
   }
 
   const handleCancelModal = () => {
@@ -154,7 +158,7 @@ const WritePage = () => {
               rows={20}
               sx={{ padding: 1 }}
               onKeyDown={tapKey}
-              disabled={imageLoaded}
+              disabled={!imageLoaded}
             />
             <Box display="flex" flexDirection="row-reverse">
               <Button variant="outlined" onClick={handleCancelModal}>
