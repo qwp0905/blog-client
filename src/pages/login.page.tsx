@@ -38,7 +38,7 @@ const LoginPage = () => {
     if (!password) {
       return toast.error('패스워드를 입력하세요')
     }
-    const response: ILoginResponse = await postJson('/user/login', {
+    const response: ILoginResponse = await postJson('/account/login', {
       email,
       password
     })

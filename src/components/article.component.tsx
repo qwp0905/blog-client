@@ -8,7 +8,7 @@ interface Props {
 
 export interface IArticle {
   id: number
-  user_id: number
+  account_id: number
   nickname: string
   title: string
   created_at: Date
@@ -54,7 +54,7 @@ const Article = ({ article }: Props) => {
         <Grid xs={6} md={3} lg={1.5} item>
           <Typography
             component="a"
-            href={`/?id=${article.user_id}`}
+            href={`/?id=${article.account_id}`}
             sx={{
               color: 'inherit',
               textDecoration: 'none',

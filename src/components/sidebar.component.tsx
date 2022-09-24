@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { getJson } from '../services/request'
 
 interface Props {
-  user_id?: string
+  account_id?: string
 }
 
 interface TagResponse {
@@ -11,12 +11,12 @@ interface TagResponse {
   quantity: number
 }
 
-const SideBar = ({ user_id }: Props) => {
+const SideBar = ({ account_id }: Props) => {
   const [tags, setTags] = useState<TagResponse[]>([])
 
   const onCreated = async () => {
     const response: TagResponse[] = await getJson(
-      `/article/tags` + ((user_id && `?id=${user_id}`) || '')
+      `/article/tags` + ((account_id && `?id=${account_id}`) || '')
     )
     setTags(response || [])
   }
@@ -31,7 +31,7 @@ const SideBar = ({ user_id }: Props) => {
         <ListItem disablePadding>
           <ListItemButton
             LinkComponent="a"
-            href={`/` + ((user_id && `?id=${user_id}`) || '')}
+            href={`/` + ((account_id && `?id=${account_id}`) || '')}
           >
             <ListItemText
               primary={`전체 (${tags.reduce((a, c) => a + c.quantity, 0)})`}
@@ -46,7 +46,7 @@ const SideBar = ({ user_id }: Props) => {
                 href={
                   `/` +
                   ((tag_name && `?tag=${tag_name}`) || '') +
-                  ((user_id && `?id=${user_id}`) || '')
+                  ((account_id && `?id=${account_id}`) || '')
                 }
               >
                 <ListItemText primary={`${tag_name} (${quantity})`} />

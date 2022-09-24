@@ -6,7 +6,7 @@ import { getJson } from '../services/request'
 
 interface ArticleDetail {
   id: number
-  user_id: number
+  account_id: number
   nickname: string
   title: string
   content: string

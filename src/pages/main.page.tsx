@@ -6,7 +6,7 @@ import SideBar from '../components/sidebar.component'
 
 const MainPage = () => {
   const url = new URL(window.location.href)
-  const user_id = url.searchParams.get('id') as string
+  const account_id = url.searchParams.get('id') as string
   const tag = url.searchParams.get('tag') as string
 
   const [articles, setArticles] = useState<IArticle[]>([])
@@ -17,7 +17,7 @@ const MainPage = () => {
     const response: IArticle[] = await getJson(
       `/article?page=${page}` +
         ((tag && `&tag=${tag}`) || '') +
-        ((user_id && `&id=${user_id}`) || '')
+        ((account_id && `&id=${account_id}`) || '')
     )
     if (response) {
       setArticles([...response])
@@ -32,7 +32,7 @@ const MainPage = () => {
     <Box>
       <Grid container>
         <Grid item md={2}>
-          {is_pc ? <SideBar user_id={user_id} /> : null}
+          {is_pc ? <SideBar account_id={account_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <List>

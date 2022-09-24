@@ -84,7 +84,7 @@ const SignUpPage = () => {
     }
     const new_email = email + '@' + domain
 
-    const response = await postJson('/user/create', {
+    const response = await postJson('/account/create', {
       email: new_email,
       password,
       nickname

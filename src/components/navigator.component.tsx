@@ -39,7 +39,7 @@ const Navigator = () => {
   }
 
   const handleLogout = async () => {
-    await postJson('/user/logout')
+    await postJson('/account/logout')
     dispatch(logout())
     setAnchorEl(null)
     toast.success('로그아웃되었습니다.')
