@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from '@mui/material'
+import { Button, TextField, Typography } from '@mui/material'
 import { Box, Stack } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -90,7 +90,7 @@ const ProfilePage = () => {
     <Box display="flex" justifyContent="center" pt={12}>
       <Stack spacing={2} minWidth={350}>
         <Box display="flex" justifyContent="center" mb={5}>
-          <Typography variant="h6">정보변경</Typography>
+          <Typography variant="h6">회원정보 수정</Typography>
         </Box>
         <Box>
           <TextField value={email} label="Email" variant="outlined" disabled fullWidth />
@@ -121,18 +121,20 @@ const ProfilePage = () => {
             error={isSamePassword}
           />
         </Box>
-        <Grid container pt={4} columnSpacing={1}>
-          <Grid item xs={6}>
-            <Button onClick={handleProfile} fullWidth variant="contained" size="large">
-              변경
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button LinkComponent="a" href="/" fullWidth variant="outlined" size="large">
-              취소
-            </Button>
-          </Grid>
-        </Grid>
+        <Box display="flex" pt={4}>
+          <Button
+            onClick={handleProfile}
+            fullWidth
+            variant="contained"
+            size="large"
+            sx={{ mr: 1 }}
+          >
+            변경
+          </Button>
+          <Button LinkComponent="a" href="/" fullWidth variant="outlined" size="large">
+            취소
+          </Button>
+        </Box>
       </Stack>
     </Box>
   )

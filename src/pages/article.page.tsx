@@ -47,7 +47,7 @@ const ArticlePage = () => {
                 {detail.tags.map((tag, i) => {
                   return (
                     <Grid item mr={1} key={i}>
-                      <Tag tag={tag} size="mn" />
+                      <Tag tag={tag} clickable />
                     </Grid>
                   )
                 })}
