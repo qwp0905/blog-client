@@ -13,6 +13,7 @@ import { toast } from '../common/utils/popup'
 import Confirm from '../components/modals/confirm.modal'
 import { useNavigate } from 'react-router-dom'
 import { formJson, postJson } from '../services/request'
+import { load } from '../common/utils/loading'
 
 const WritePage = () => {
   const navigate = useNavigate()
@@ -22,7 +23,6 @@ const WritePage = () => {
   const [tag_temp, setTagTemp] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [cancelModal, setCancelModal] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(true)
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -63,17 +63,19 @@ const WritePage = () => {
       const image = e.target.files[0]
       if (!image?.type.match(/^image/)) {
         toast.error('올바른 형식의 이미지를 업로드해주세요.')
-      } else if (image.size > 10 * 1024 * 1024) {
-        toast.error('10MB 이하의 이미지를 업로드해주세요.')
+      } else if (image.size > 5 * 1024 * 1024) {
+        toast.error('5MB 이하의 이미지를 업로드해주세요.')
       } else {
-        setImageLoaded(false)
+        load.start()
         const file = new FormData()
         file.append('image', image)
         const response = await formJson('/upload', file)
         if (response) {
-          setContent(content + '\n' + `![${new Date().toISOString()}](${response})`)
+          setContent(
+            content + '\n' + `![${new Date().toISOString()}](${response})  ` + '\n'
+          )
         }
-        setImageLoaded(true)
+        load.end()
       }
       e.target.files = null
     }
@@ -88,6 +90,17 @@ const WritePage = () => {
   }
 
   const submit = async () => {
+    if (!title) {
+      return toast.error('제목을 입력하세요.')
+    }
+
+    if (!tags.length) {
+      return toast.error('태그를 등록하세요.')
+    }
+
+    if (!content) {
+      return toast.error('내용을 입력하세요.')
+    }
     const response = await postJson('/article', { title, tags, content })
     if (response) {
       navigate('/')
@@ -158,7 +171,6 @@ const WritePage = () => {
               rows={20}
               sx={{ padding: 1 }}
               onKeyDown={tapKey}
-              disabled={!imageLoaded}
             />
             <Box display="flex" flexDirection="row-reverse">
               <Button variant="outlined" onClick={handleCancelModal}>

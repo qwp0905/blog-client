@@ -34,11 +34,13 @@ const SideBar = ({ account_id }: Props) => {
             href={`/` + ((account_id && `?id=${account_id}`) || '')}
           >
             <ListItemText
-              primary={`전체 (${tags.reduce((a, c) => a + c.quantity, 0)})`}
+              primary={
+                (tags.length && `${tags[0].tag_name} (${tags[0].quantity})`) || `전체 (0)`
+              }
             />
           </ListItemButton>
         </ListItem>
-        {tags.map(({ tag_name, quantity }, i) => {
+        {tags.slice(1).map(({ tag_name, quantity }, i) => {
           return (
             <ListItem key={i} disablePadding>
               <ListItemButton
@@ -46,7 +48,7 @@ const SideBar = ({ account_id }: Props) => {
                 href={
                   `/` +
                   ((tag_name && `?tag=${tag_name}`) || '') +
-                  ((account_id && `?id=${account_id}`) || '')
+                  ((account_id && `${(tag_name && `&`) || `?`}id=${account_id}`) || '')
                 }
               >
                 <ListItemText primary={`${tag_name} (${quantity})`} />

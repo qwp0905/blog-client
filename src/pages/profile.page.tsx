@@ -1,0 +1,140 @@
+import { Button, Grid, TextField, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/system'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from '../common/utils/popup'
+import Password from '../components/password.component'
+import { patchJson } from '../services/request'
+import { AuthState, updateInfo } from '../store/slices/auth.slice'
+
+const ProfilePage = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { nickname, email } = useSelector(AuthState)
+
+  const [newNickname, setNewNickname] = useState(nickname)
+  const [isValidNickname, setIsValidNickname] = useState(true)
+
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+
+  const [isValidPassword, setIsValidPassword] = useState(true)
+  const [isSamePassword, setIsSamePassword] = useState(true)
+
+  const validatePassword = (password: string) => {
+    return (
+      !~password.search(/[a-zA-Z]/) ||
+      !~password.search(/[0-9]/) ||
+      !~password.search(/[`~!@#$%^&*()-_=+]/) ||
+      password.length < 8 ||
+      password.length > 24
+    )
+  }
+
+  const validateNickname = (nickname: string) => {
+    return !nickname.match(/^[0-9a-zA-Z]*$/)
+  }
+
+  const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewNickname(e.target.value)
+  }
+
+  const handleProfile = async () => {
+    if (nickname !== newNickname || password || passwordConfirm) {
+      if (!newNickname) {
+        return toast.error('닉네임은 비워들 수 없습니다.')
+      }
+
+      if (validateNickname(newNickname)) {
+        return toast.error('닉네임을 확인해주세요.')
+      }
+
+      if (password && validatePassword(password)) {
+        return toast.error('비밀번호는 8자 이상으로 입력해주세요.')
+      }
+
+      if (password !== passwordConfirm) {
+        return toast.error('비밀번호가 일치하지 않습니다.')
+      }
+
+      const response = await patchJson('/account', {
+        nickname: newNickname !== nickname && newNickname,
+        password: password ? password : undefined
+      })
+
+      if (response) {
+        dispatch(updateInfo({ nickname: newNickname }))
+        return navigate('/')
+      }
+    } else {
+      return toast.error('변경사항이 없습니다.')
+    }
+  }
+
+  useEffect(() => {
+    setIsValidNickname(validateNickname(newNickname || ''))
+  }, [newNickname])
+
+  useEffect(() => {
+    setIsValidPassword(validatePassword(password))
+  }, [password])
+
+  useEffect(() => {
+    setIsSamePassword(password !== passwordConfirm)
+  }, [passwordConfirm])
+
+  return (
+    <Box display="flex" justifyContent="center" pt={12}>
+      <Stack spacing={2} minWidth={350}>
+        <Box display="flex" justifyContent="center" mb={5}>
+          <Typography variant="h6">정보변경</Typography>
+        </Box>
+        <Box>
+          <TextField value={email} label="Email" variant="outlined" disabled fullWidth />
+        </Box>
+        <Box>
+          <TextField
+            value={newNickname}
+            onChange={handleNickname}
+            fullWidth
+            label="Nickname"
+            variant="outlined"
+            error={isValidNickname}
+          />
+        </Box>
+        <Box>
+          <Password
+            state={password}
+            set={setPassword}
+            error={isValidPassword && password !== ''}
+            label="New Password"
+          />
+        </Box>
+        <Box>
+          <Password
+            state={passwordConfirm}
+            set={setPasswordConfirm}
+            label="New Password Confirm"
+            error={isSamePassword}
+          />
+        </Box>
+        <Grid container pt={4} columnSpacing={1}>
+          <Grid item xs={6}>
+            <Button onClick={handleProfile} fullWidth variant="contained" size="large">
+              변경
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button LinkComponent="a" href="/" fullWidth variant="outlined" size="large">
+              취소
+            </Button>
+          </Grid>
+        </Grid>
+      </Stack>
+    </Box>
+  )
+}
+export default ProfilePage

@@ -29,6 +29,9 @@ const Markdown = ({ content }: Props) => {
               {children}
             </code>
           )
+        },
+        img: ({ src, ...props }) => {
+          return <img style={{ maxWidth: '100%' }} src={src} {...props} />
         }
       }}
     />

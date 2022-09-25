@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { postJson } from '../services/request'
-import { AuthState, logout } from '../store/slices/auth.slice'
+import { AuthState, deleteInfo } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
 import { toast } from '../common/utils/popup'
 
@@ -38,9 +38,13 @@ const Navigator = () => {
     setLogoutModal(true)
   }
 
+  const handleProfile = () => {
+    navigate('/profile')
+  }
+
   const handleLogout = async () => {
     await postJson('/account/logout')
-    dispatch(logout())
+    dispatch(deleteInfo())
     setAnchorEl(null)
     toast.success('로그아웃되었습니다.')
     return navigate('/')
@@ -48,9 +52,9 @@ const Navigator = () => {
 
   return (
     <Box>
-      <AppBar position="fixed" color="inherit">
+      <AppBar position="fixed" color="inherit" sx={{ zIndex: 3 }}>
         <Box>
-          <Toolbar>
+          <Toolbar sx={{}}>
             <Grid container>
               <Grid item xs={0} lg={1} />
               <Grid item xs={6} lg={10}>
@@ -101,7 +105,7 @@ const Navigator = () => {
               anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
               onClose={() => setAnchorEl(null)}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
               <MenuItem onClick={handleLogoutModal}>Logout</MenuItem>
             </Menu>
           </Toolbar>

@@ -3,8 +3,9 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import authSlice from './slices/auth.slice'
 import popupSlice from './slices/popup.slice'
+import loadingSlice from './slices/loading.slice'
 
-const reducers = combineReducers({ authSlice, popupSlice })
+const reducers = combineReducers({ authSlice, popupSlice, loadingSlice })
 
 const persistedReducer = persistReducer(
   {

@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 import { calculateDate } from '../common/utils/moment'
+import Nickname from './nickname.component'
 import Tag from './tag.component'
 
 interface Props {
@@ -52,17 +53,7 @@ const Article = ({ article }: Props) => {
           <Typography>{calculateDate(article.updated_at)}</Typography>
         </Grid>
         <Grid xs={6} md={3} lg={1.5} item>
-          <Typography
-            component="a"
-            href={`/?id=${article.account_id}`}
-            sx={{
-              color: 'inherit',
-              textDecoration: 'none',
-              ':hover': { cursor: 'pointer', opacity: 0.7 }
-            }}
-          >
-            {article.nickname}
-          </Typography>
+          <Nickname account_id={article.account_id} nickname={article.nickname} />
         </Grid>
       </Grid>
     </Box>

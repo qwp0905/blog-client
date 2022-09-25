@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
 import { postJson } from '../services/request'
-import { AuthState, login } from '../store/slices/auth.slice'
+import { AuthState, updateInfo } from '../store/slices/auth.slice'
 
 interface ILoginResponse {
   id: number
@@ -43,7 +43,7 @@ const LoginPage = () => {
       password
     })
     if (response) {
-      dispatch(login(response))
+      dispatch(updateInfo(response))
       return toast.success('로그인되었습니다.')
     }
   }
