@@ -61,7 +61,7 @@ const ProfilePage = () => {
       }
 
       const response = await patchJson('/account', {
-        nickname: newNickname !== nickname && newNickname,
+        nickname: newNickname !== nickname ? newNickname : undefined,
         password: password ? password : undefined
       })
 
