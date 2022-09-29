@@ -6,7 +6,6 @@ interface State {
   nickname?: string
   email?: string
   access_token?: string
-  refresh_token?: string
   created_at?: string
 }
 

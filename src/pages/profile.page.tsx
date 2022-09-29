@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { nickname, email } = useSelector(AuthState)
+  const { nickname, email, access_token } = useSelector(AuthState)
 
   const [newNickname, setNewNickname] = useState(nickname)
   const [isValidNickname, setIsValidNickname] = useState(true)
@@ -85,6 +85,12 @@ const ProfilePage = () => {
   useEffect(() => {
     setIsSamePassword(password !== passwordConfirm)
   }, [passwordConfirm])
+
+  useEffect(() => {
+    if (!access_token) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <Box display="flex" justifyContent="center" pt={12}>

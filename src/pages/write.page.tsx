@@ -10,7 +10,7 @@ import {
   Stack,
   TextField
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageIcon from '@mui/icons-material/Image'
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import { toast } from '../common/utils/popup'
@@ -19,9 +19,16 @@ import { useNavigate } from 'react-router-dom'
 import { formJson, postJson } from '../services/request'
 import { load } from '../common/utils/loading'
 import Tag from '../components/tag.component'
+import { useSelector } from 'react-redux'
+import { AuthState } from '../store/slices/auth.slice'
 
 const WritePage = () => {
+  const url = new URL(window.location.href)
+  const encrypted_article_id = url.searchParams.get('id') as string
+
   const navigate = useNavigate()
+
+  const { access_token } = useSelector(AuthState)
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -112,10 +119,6 @@ const WritePage = () => {
     closeLinkModal()
   }
 
-  const handleCancel = () => {
-    return navigate('/')
-  }
-
   const submit = async () => {
     if (!title) {
       return toast.error('제목을 입력하세요.')
@@ -133,6 +136,15 @@ const WritePage = () => {
       navigate('/')
     }
   }
+
+  useEffect(() => {
+    if (!access_token) {
+      navigate('/')
+    }
+    if (encrypted_article_id) {
+      console.log(123)
+    }
+  }, [])
 
   return (
     <Box pt={5}>
@@ -213,7 +225,7 @@ const WritePage = () => {
         open={cancelModal}
         onClose={() => setCancelModal(false)}
         message="취소하시겠습니까?"
-        fn={handleCancel}
+        fn={() => navigate('/')}
       />
       <Dialog fullWidth={true} maxWidth="xs" open={linkModal} onClose={closeLinkModal}>
         <DialogContent>

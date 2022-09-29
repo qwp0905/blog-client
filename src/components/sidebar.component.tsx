@@ -1,5 +1,6 @@
 import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { decryptAES } from '../common/utils/aes'
 import { getJson } from '../services/request'
 
 interface Props {
@@ -16,7 +17,7 @@ const SideBar = ({ account_id }: Props) => {
 
   const onCreated = async () => {
     const response: TagResponse[] = await getJson(
-      `/article/tags` + ((account_id && `?id=${account_id}`) || '')
+      `/article/tags` + ((account_id && `?id=${decryptAES(account_id)}`) || '')
     )
     setTags(response || [])
   }

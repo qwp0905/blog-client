@@ -1,4 +1,5 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
+import { encryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
 import Nickname from './nickname.component'
 import Tag from './tag.component'
@@ -23,7 +24,7 @@ const Article = ({ article }: Props) => {
       <Stack spacing={2}>
         <Box
           component="a"
-          href={`/article?id=${article.id}`}
+          href={`/article?id=${encryptAES(`${article.id}`)}`}
           sx={{
             width: '100%',
             ':hover': {
@@ -39,7 +40,7 @@ const Article = ({ article }: Props) => {
         <Grid container>
           {article.tags.map((tag, i) => {
             return (
-              <Grid item key={i} mr={1}>
+              <Grid item key={i} mr={1} mb={1}>
                 <Tag tag={tag} clickable />
               </Grid>
             )

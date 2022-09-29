@@ -4,10 +4,11 @@ import Article, { IArticle } from '../components/article.component'
 import { getJson } from '../services/request'
 import SideBar from '../components/sidebar.component'
 import { PAGE_LIMIT } from '../common/constants/page'
+import { decryptAES } from '../common/utils/aes'
 
 const MainPage = () => {
   const url = new URL(window.location.href)
-  const account_id = url.searchParams.get('id') as string
+  const encrypted_account_id = url.searchParams.get('id') as string
   const tag = url.searchParams.get('tag') as string
 
   const [articles, setArticles] = useState<IArticle[]>([])
@@ -20,7 +21,7 @@ const MainPage = () => {
     const response: IArticle[] = await getJson(
       `/article?page=${page}` +
         ((tag && `&tag=${tag}`) || '') +
-        ((account_id && `&id=${account_id}`) || '')
+        ((encrypted_account_id && `&id=${decryptAES(encrypted_account_id)}`) || '')
     )
     if (response) {
       setArticles([...articles, ...response.slice(0, PAGE_LIMIT)])
@@ -56,7 +57,7 @@ const MainPage = () => {
     <Box>
       <Grid container>
         <Grid item md={2}>
-          {is_pc ? <SideBar account_id={account_id} /> : null}
+          {is_pc ? <SideBar account_id={encrypted_account_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <List>

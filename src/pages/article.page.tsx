@@ -1,5 +1,7 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { decryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
 import Markdown from '../components/markdown.component'
 import Nickname from '../components/nickname.component'
@@ -18,17 +20,24 @@ interface ArticleDetail {
 
 const ArticlePage = () => {
   const url = new URL(window.location.href)
-  const article_id = url.searchParams.get('id') as string
+  const encrypted_article_id = url.searchParams.get('id') as string
+
+  const navigate = useNavigate()
 
   const [detail, setDetail] = useState<ArticleDetail | null>(null)
 
-  const onCreated = async () => {
+  const onCreated = async (article_id: number) => {
     const response: ArticleDetail = await getJson(`article/${article_id}`)
     setDetail(response)
   }
 
   useEffect(() => {
-    onCreated()
+    try {
+      const article_id = decryptAES(encrypted_article_id)
+      onCreated(+article_id)
+    } catch {
+      navigate('/')
+    }
   }, [])
 
   return (
@@ -46,7 +55,7 @@ const ArticlePage = () => {
               <Grid container pt={1} pb={1}>
                 {detail.tags.map((tag, i) => {
                   return (
-                    <Grid item mr={1} key={i}>
+                    <Grid item mr={1} mb={1} key={i}>
                       <Tag tag={tag} clickable />
                     </Grid>
                   )
