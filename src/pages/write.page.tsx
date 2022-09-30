@@ -16,11 +16,13 @@ import AddLinkIcon from '@mui/icons-material/AddLink'
 import { toast } from '../common/utils/popup'
 import Confirm from '../components/modals/confirm.modal'
 import { useNavigate } from 'react-router-dom'
-import { formJson, postJson } from '../services/request'
+import { formJson, getJson, patchJson, postJson } from '../services/request'
 import { load } from '../common/utils/loading'
 import Tag from '../components/tag.component'
 import { useSelector } from 'react-redux'
 import { AuthState } from '../store/slices/auth.slice'
+import { ArticleDetail } from './article.page'
+import { decryptAES, encryptAES } from '../common/utils/aes'
 
 const WritePage = () => {
   const url = new URL(window.location.href)
@@ -37,6 +39,7 @@ const WritePage = () => {
   const [cancelModal, setCancelModal] = useState(false)
   const [linkModal, setLinkModal] = useState(false)
   const [link, setLink] = useState('')
+  const [articleId, setArticleId] = useState<number | null>(null)
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -131,10 +134,27 @@ const WritePage = () => {
     if (!content) {
       return toast.error('내용을 입력하세요.')
     }
-    const response = await postJson('/article', { title, tags, content })
-    if (response) {
-      navigate('/')
+    const body = { title, tags, content }
+    if (articleId) {
+      const response = await patchJson(`/article/${articleId}`, body)
+      if (response) {
+        navigate(`/article?id=${encryptAES(`${articleId}`)}`)
+      }
+    } else {
+      const response = await postJson('/article', body)
+      if (response) {
+        navigate(`/`)
+      }
     }
+  }
+
+  const onCreated = async (article_id: number) => {
+    const response: ArticleDetail = await getJson(`article/${article_id}`)
+    if (!response) navigate('/')
+    setTitle(response.title)
+    setTags(response.tags)
+    setContent(response.content)
+    setArticleId(response.id)
   }
 
   useEffect(() => {
@@ -142,7 +162,8 @@ const WritePage = () => {
       navigate('/')
     }
     if (encrypted_article_id) {
-      console.log(123)
+      const article_id = decryptAES(encrypted_article_id)
+      onCreated(+article_id)
     }
   }, [])
 

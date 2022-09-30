@@ -8,7 +8,7 @@ import Nickname from '../components/nickname.component'
 import Tag from '../components/tag.component'
 import { getJson } from '../services/request'
 
-interface ArticleDetail {
+export interface ArticleDetail {
   id: number
   account_id: number
   nickname: string
@@ -28,16 +28,13 @@ const ArticlePage = () => {
 
   const onCreated = async (article_id: number) => {
     const response: ArticleDetail = await getJson(`article/${article_id}`)
+    if (!response) navigate('/')
     setDetail(response)
   }
 
   useEffect(() => {
-    try {
-      const article_id = decryptAES(encrypted_article_id)
-      onCreated(+article_id)
-    } catch {
-      navigate('/')
-    }
+    const article_id = decryptAES(encrypted_article_id)
+    onCreated(+article_id)
   }, [])
 
   return (
@@ -48,9 +45,22 @@ const ArticlePage = () => {
           {(detail && (
             <Stack spacing={1}>
               <Typography fontSize={50}>{detail.title}</Typography>
-              <Box display="flex">
-                <Nickname account_id={detail.account_id} nickname={detail.nickname} />
-                <Typography ml={1}>{calculateDate(detail.updated_at)}</Typography>
+              <Box display="flex" justifyContent="space-between">
+                <Box display="flex">
+                  <Nickname account_id={detail.account_id} nickname={detail.nickname} />
+                  <Typography ml={1}>{calculateDate(detail.updated_at)}</Typography>
+                </Box>
+                <Box
+                  component="a"
+                  href={`/write?id=${encrypted_article_id}`}
+                  sx={{
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    ':hover': { cursor: 'pointer', opacity: 0.8 }
+                  }}
+                >
+                  수정
+                </Box>
               </Box>
               <Grid container pt={1} pb={1}>
                 {detail.tags.map((tag, i) => {
