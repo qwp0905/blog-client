@@ -3,6 +3,7 @@ import { encryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
 import Nickname from './nickname.component'
 import Tag from './tag.component'
+import View from './view.component'
 
 interface Props {
   article: IArticle
@@ -13,6 +14,7 @@ export interface IArticle {
   account_id: number
   nickname: string
   title: string
+  views: number
   created_at: Date
   updated_at: Date
   tags: string[]
@@ -47,8 +49,11 @@ const Article = ({ article }: Props) => {
           })}
         </Grid>
         <Box display="flex">
-          <Typography sx={{ mr: 2 }}>{calculateDate(article.updated_at)}</Typography>
-          <Nickname account_id={article.account_id} nickname={article.nickname} />
+          <Typography sx={{ mr: 2 }}>{calculateDate(article.created_at)}</Typography>
+          <Box sx={{ mr: 2 }}>
+            <Nickname account_id={article.account_id} nickname={article.nickname} />
+          </Box>
+          <View count={article.views} />
         </Box>
       </Stack>
     </Box>

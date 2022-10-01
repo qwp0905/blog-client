@@ -1,6 +1,6 @@
 import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { decryptAES } from '../common/utils/aes'
+import { decryptAES, encryptAES } from '../common/utils/aes'
 import { getJson } from '../services/request'
 
 interface Props {
@@ -32,7 +32,9 @@ const SideBar = ({ account_id }: Props) => {
         <ListItem disablePadding>
           <ListItemButton
             LinkComponent="a"
-            href={`/` + ((account_id && `?id=${account_id}`) || '')}
+            href={
+              `/` + ((account_id && `?id=${encryptAES(decryptAES(account_id))}`) || '')
+            }
           >
             <ListItemText
               primary={
@@ -49,7 +51,11 @@ const SideBar = ({ account_id }: Props) => {
                 href={
                   `/` +
                   ((tag_name && `?tag=${tag_name}`) || '') +
-                  ((account_id && `${(tag_name && `&`) || `?`}id=${account_id}`) || '')
+                  ((account_id &&
+                    `${(tag_name && `&`) || `?`}id=${encryptAES(
+                      decryptAES(account_id)
+                    )}`) ||
+                    '')
                 }
               >
                 <ListItemText primary={`${tag_name} (${quantity})`} />

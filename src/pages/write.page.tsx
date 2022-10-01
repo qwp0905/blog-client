@@ -30,7 +30,7 @@ const WritePage = () => {
 
   const navigate = useNavigate()
 
-  const { access_token } = useSelector(AuthState)
+  const { access_token, id } = useSelector(AuthState)
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -150,7 +150,10 @@ const WritePage = () => {
 
   const onCreated = async (article_id: number) => {
     const response: ArticleDetail = await getJson(`article/${article_id}`)
-    if (!response) navigate('/')
+    if (!response || response.account_id !== id) {
+      toast.error('권한이 없습니다.')
+      navigate('/')
+    }
     setTitle(response.title)
     setTags(response.tags)
     setContent(response.content)
