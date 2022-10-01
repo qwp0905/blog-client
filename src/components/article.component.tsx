@@ -4,6 +4,7 @@ import { calculateDate } from '../common/utils/moment'
 import Nickname from './nickname.component'
 import Tag from './tag.component'
 import View from './view.component'
+import Heart from './heart.component'
 
 interface Props {
   article: IArticle
@@ -15,6 +16,7 @@ export interface IArticle {
   nickname: string
   title: string
   views: number
+  heart: number
   created_at: Date
   updated_at: Date
   tags: string[]
@@ -54,6 +56,7 @@ const Article = ({ article }: Props) => {
             <Nickname account_id={article.account_id} nickname={article.nickname} />
           </Box>
           <View count={article.views} />
+          <Heart count={article.heart} article_id={article.id} />
         </Box>
       </Stack>
     </Box>

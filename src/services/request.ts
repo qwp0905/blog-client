@@ -23,7 +23,7 @@ request.interceptors.response.use(
   ({ data }) => {
     const { result, message, data: real_data }: ResponseBase<any> = data
     if (result) {
-      return real_data || true
+      return real_data ?? true
     } else {
       toast.error(message)
       return null

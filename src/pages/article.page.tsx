@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { decryptAES, encryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
 import { toast } from '../common/utils/popup'
+import Heart from '../components/heart.component'
 import Markdown from '../components/markdown.component'
 import Confirm from '../components/modals/confirm.modal'
 import Nickname from '../components/nickname.component'
@@ -19,6 +20,7 @@ export interface ArticleDetail {
   nickname: string
   title: string
   views: number
+  heart: number
   content: string
   created_at: Date
   updated_at: Date
@@ -76,10 +78,18 @@ const ArticlePage = () => {
               </Box>
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
-                  <Box mr={1}>
+                  <Box mr={1} display="flex" alignItems="center">
                     <Nickname account_id={detail.account_id} nickname={detail.nickname} />
                   </Box>
-                  <Typography mr={1}>{calculateDate(detail.created_at)}</Typography>
+                  <Box display="flex" alignItems="center">
+                    <Typography mr={1}>{calculateDate(detail.created_at)}</Typography>
+                  </Box>
+                  <Heart
+                    article_id={detail.id}
+                    count={detail.heart}
+                    clickable
+                    size="medium"
+                  />
                 </Box>
                 {id === detail.account_id ? (
                   <Box display="flex">
