@@ -1,5 +1,6 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import { computeCount } from '../common/utils/count'
 
 interface Props {
   count: number
@@ -13,7 +14,7 @@ const View = ({ count, size = 'small' }: Props) => {
         <VisibilityOutlinedIcon color="disabled" fontSize={size} />
       </IconButton>
       <Typography color="GrayText" fontSize={size}>
-        {count}
+        {computeCount(count)}
       </Typography>
     </Box>
   )

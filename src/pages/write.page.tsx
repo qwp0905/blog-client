@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../store/slices/auth.slice'
 import { ArticleDetail } from './article.page'
 import { decryptAES, encryptAES } from '../common/utils/aes'
+import { Date } from '../common/utils/date'
 
 const WritePage = () => {
   const url = new URL(window.location.href)
@@ -90,9 +91,7 @@ const WritePage = () => {
         file.append('image', image)
         const response = await formJson('/upload', file)
         if (response) {
-          setContent(
-            content + '\n' + `![${new Date().toISOString()}](${response})  ` + '\n'
-          )
+          setContent(content + '\n' + `![${Date()}](${response})  ` + '\n')
         }
         load.end()
       }
