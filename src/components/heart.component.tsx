@@ -54,9 +54,9 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
     <Box display="flex" alignItems="center">
       <IconButton disabled={!clickable} sx={{ mr: -0.7 }} onClick={handleCount}>
         {isHeart && clickable ? (
-          <FavoriteIcon color="disabled" fontSize={size} />
+          <FavoriteIcon color="error" fontSize={size} />
         ) : (
-          <FavoriteBorderIcon color="disabled" fontSize={size} />
+          <FavoriteBorderIcon color="inherit" fontSize={size} />
         )}
       </IconButton>
       <Typography color="GrayText" fontSize={size}>

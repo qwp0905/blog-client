@@ -11,7 +11,7 @@ const View = ({ count, size = 'small' }: Props) => {
   return (
     <Box display="flex" alignItems="center">
       <IconButton disabled sx={{ mr: -0.7 }}>
-        <VisibilityOutlinedIcon color="disabled" fontSize={size} />
+        <VisibilityOutlinedIcon color="inherit" fontSize={size} />
       </IconButton>
       <Typography color="GrayText" fontSize={size}>
         {computeCount(count)}

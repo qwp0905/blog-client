@@ -1,10 +1,11 @@
-import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { decryptAES, encryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
 import { toast } from '../common/utils/popup'
+import CommentList from '../components/comment-list.component'
 import Heart from '../components/heart.component'
 import Markdown from '../components/markdown.component'
 import Confirm from '../components/modals/confirm.modal'
@@ -13,6 +14,8 @@ import Tag from '../components/tag.component'
 import View from '../components/view.component'
 import { deleteJson, getJson } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
+import { computeCount } from '../common/utils/count'
 
 export interface ArticleDetail {
   id: number
@@ -21,6 +24,7 @@ export interface ArticleDetail {
   title: string
   views: number
   heart: number
+  comments: number
   content: string
   created_at: Date
   updated_at: Date
@@ -74,7 +78,17 @@ const ArticlePage = () => {
             <Stack spacing={1}>
               <Box display="flex" justifyContent="space-between">
                 <Typography fontSize={50}>{detail.title}</Typography>
-                <View count={detail.views} />
+                <Box display="flex">
+                  <View count={detail.views} />
+                  <Box display="flex" alignItems="center">
+                    <IconButton disabled sx={{ mr: -0.7 }}>
+                      <CommentOutlinedIcon color="inherit" fontSize="small" />
+                    </IconButton>
+                    <Typography color="GrayText" fontSize="small">
+                      {computeCount(detail.comments)}
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
@@ -142,6 +156,7 @@ const ArticlePage = () => {
                 <Markdown content={detail.content} />
               </Box>
               <Divider />
+              <CommentList article_id={detail.id} />
             </Stack>
           )) || <Box></Box>}
         </Grid>
