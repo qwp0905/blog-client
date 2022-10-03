@@ -23,9 +23,12 @@ const CommentList = ({ article_id }: Props) => {
   const [scrollEnd, setScrollEnd] = useState(false)
   const [commentTemp, setCommentTemp] = useState('')
   const [checkLoginModal, setCheckLoginModal] = useState(false)
+  const [onlyOneUpdate, setOnlyOneUpdate] = useState(false)
 
   const getComments = async (page: number) => {
-    const response: IComment[] = await getJson(`/comment/${article_id}?page=${page}`)
+    const response: IComment[] = await getJson(
+      `/comment?article_id=${article_id}&page=${page}`
+    )
     if (response) {
       setComments([...comments, ...response.slice(0, PAGE_LIMIT)])
       if (response.length < PAGE_LIMIT) {
@@ -97,14 +100,20 @@ const CommentList = ({ article_id }: Props) => {
           </Button>
         </Box>
       </Box>
-      {comments.map((comment, i) => {
-        return (
-          <Box key={i}>
-            <Comment comment={comment} />
-            <Divider />
-          </Box>
-        )
-      })}
+      <Box mt={1}>
+        {comments.map((comment, i) => {
+          return (
+            <Box key={i}>
+              <Comment
+                onlyOneUpdate={onlyOneUpdate}
+                setOnlyOneUpdate={setOnlyOneUpdate}
+                comment={comment}
+              />
+              <Divider />
+            </Box>
+          )
+        })}
+      </Box>
       <Confirm
         open={checkLoginModal}
         onClose={() => setCheckLoginModal(false)}
