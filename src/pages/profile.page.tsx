@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
-import { patchJson } from '../services/request'
+import { requestPatch } from '../services/request'
 import { AuthState, updateInfo } from '../store/slices/auth.slice'
 
 const ProfilePage = () => {
@@ -60,13 +60,14 @@ const ProfilePage = () => {
         return toast.error('비밀번호가 일치하지 않습니다.')
       }
 
-      const response = await patchJson('/account', {
+      const response = await requestPatch('/account', {
         nickname: newNickname !== nickname ? newNickname : undefined,
         password: password ? password : undefined
       })
 
       if (response) {
         dispatch(updateInfo({ nickname: newNickname }))
+        toast.success('변경되었습니다.')
         return navigate('/')
       }
     } else {
@@ -90,7 +91,7 @@ const ProfilePage = () => {
     if (!access_token) {
       navigate('/')
     }
-  }, [])
+  }, [access_token])
 
   return (
     <Box display="flex" justifyContent="center" pt={12}>

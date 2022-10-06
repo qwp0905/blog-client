@@ -2,63 +2,87 @@ import axios from 'axios'
 import { ResponseBase } from '../common/interfaces/http.interface'
 import { toast } from '../common/utils/popup'
 import { store } from '../store'
+import { deleteInfo, updateInfo } from '../store/slices/auth.slice'
 
-const request = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_HOST,
-  timeout: 120000
-})
+export const requestGet = (url: string) => {
+  return executeRequest('get', url)
+}
 
-request.interceptors.request.use(
-  (config) => {
-    const access_token = store.getState().authSlice?.access_token
-    config.headers = { ...config.headers, Authorization: `Bearer ${access_token}` }
-    return config
-  },
-  (err) => {
-    return toast.error(err.message)
-  }
-)
+export const requestPost = (url: string, body?: any) => {
+  return executeRequest('post', url, body)
+}
 
-request.interceptors.response.use(
-  ({ data }) => {
-    const { result, message, data: real_data }: ResponseBase<any> = data
+export const requestPut = (url: string, body?: any) => {
+  return executeRequest('put', url, body)
+}
+
+export const requestPatch = (url: string, body?: any) => {
+  return executeRequest('patch', url, body)
+}
+
+export const requestDelete = (url: string) => {
+  return executeRequest('delete', url)
+}
+
+export const requestForm = (url: string, data: FormData) => {
+  return executeRequest('post', url, data, { 'Content-Type': 'multipart/form-data' })
+}
+
+const request = async (method: string, url: string, body?: any, headers?: any) => {
+  const { data } = await axios.request({
+    method,
+    url: process.env.REACT_APP_SERVER_HOST + url,
+    data: body,
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${store.getState().authSlice.access_token}`
+    }
+  })
+  return data as ResponseBase<any>
+}
+
+const executeRequest = async (method: string, url: string, body?: any, headers?: any) => {
+  try {
+    const { code, result, message, data } = await request(method, url, body, headers)
+
     if (result) {
-      return real_data ?? true
-    } else {
+      return data ?? true
+    }
+
+    if (code === 401) {
+      const access_token = await refreshToken()
+      store.dispatch(updateInfo({ access_token }))
+
+      const { result, message, data } = await request(method, url, body, headers)
+
+      if (result) {
+        return data ?? true
+      }
       toast.error(message)
       return null
     }
-  },
-  (err) => {
+
+    toast.error(message)
+    return null
+  } catch (err: any) {
     return toast.error(err.message)
   }
-)
-
-export const getJson = async (url: string): Promise<any> => {
-  return request({ url, method: 'get' })
 }
 
-export const postJson = async (url: string, data: any = {}): Promise<any> => {
-  return request({ url, method: 'post', data })
-}
+const refreshToken = async () => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
+    {
+      id: store.getState().authSlice.id,
+      refresh_token: store.getState().authSlice.refresh_token
+    }
+  )
 
-export const putJson = async (url: string, data: any = {}): Promise<any> => {
-  return request({ url, data, method: 'put' })
-}
+  const { result, data: real_data }: ResponseBase<any> = data
+  if (!result) {
+    store.dispatch(deleteInfo())
+    throw new Error('다시 로그인해주세요')
+  }
 
-export const patchJson = async (url: string, data: any = {}): Promise<any> => {
-  return request({ url, data, method: 'patch' })
-}
-
-export const deleteJson = async (url: string): Promise<any> => {
-  return request({ url, method: 'delete' })
-}
-
-export const formJson = async (url: string, data: FormData) => {
-  return request({
-    url,
-    data,
-    headers: { 'Content-Type': 'multipart/form-data' },
-    method: 'post'
-  })
+  return real_data
 }

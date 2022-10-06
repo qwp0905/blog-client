@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
-import { postJson } from '../services/request'
+import { requestPost } from '../services/request'
 import { AuthState, updateInfo } from '../store/slices/auth.slice'
 
 interface ILoginResponse {
@@ -38,7 +38,7 @@ const LoginPage = () => {
     if (!password) {
       return toast.error('패스워드를 입력하세요')
     }
-    const response: ILoginResponse = await postJson('/account/login', {
+    const response: ILoginResponse = await requestPost('/account/login', {
       email,
       password
     })

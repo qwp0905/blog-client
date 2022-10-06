@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { calculateDate } from '../common/utils/moment'
 import { toast } from '../common/utils/popup'
-import { deleteJson, patchJson } from '../services/request'
+import { requestDelete, requestPatch } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
 import Nickname from './nickname.component'
@@ -51,7 +51,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
     if (id !== comment.account_id) {
       return toast.error('권한이 없습니다.')
     }
-    const response = await deleteJson(`/comment/${comment.id}`)
+    const response = await requestDelete(`/comment/${comment.id}`)
     if (response) {
       toast.success('댓글이 삭제되었습니다.')
       return window.location.reload()
@@ -59,7 +59,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
   }
 
   const submitUpdate = async () => {
-    const response = await patchJson(`/comment/${comment.id}`, { content })
+    const response = await requestPatch(`/comment/${comment.id}`, { content })
     if (response) {
       toast.success('댓글이 수정되었습니다.')
       setUpdate(false)

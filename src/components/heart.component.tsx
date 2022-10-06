@@ -3,7 +3,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { deleteJson, getJson, postJson } from '../services/request'
+import { requestDelete, requestGet, requestPost } from '../services/request'
 import { useSelector } from 'react-redux'
 import { AuthState } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
@@ -27,7 +27,7 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
   const [checkLoginModal, setCheckLoginModal] = useState(false)
 
   const checkHeart = async () => {
-    const response: boolean = await getJson(`/heart/${article_id}`)
+    const response: boolean = await requestGet(`/heart/${article_id}`)
     setIsHeart(response)
   }
 
@@ -36,9 +36,9 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
       return setCheckLoginModal(true)
     }
     if (!isHeart) {
-      await postJson(`/heart/${article_id}`)
+      await requestPost(`/heart/${article_id}`)
     } else {
-      await deleteJson(`/heart/${article_id}`)
+      await requestDelete(`/heart/${article_id}`)
     }
     setIsHeart(!isHeart)
     setHeartCount(heartCount + (isHeart ? -1 : +1))

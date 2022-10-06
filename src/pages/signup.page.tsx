@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
-import { postJson } from '../services/request'
+import { requestPost } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 
 const email_list = ['gmail.com', 'naver.com', 'hanmail.net']
@@ -84,7 +84,7 @@ const SignUpPage = () => {
     }
     const new_email = email + '@' + domain
 
-    const response = await postJson('/account', {
+    const response = await requestPost('/account', {
       email: new_email,
       password,
       nickname

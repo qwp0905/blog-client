@@ -12,7 +12,7 @@ import Confirm from '../components/modals/confirm.modal'
 import Nickname from '../components/nickname.component'
 import Tag from '../components/tag.component'
 import View from '../components/view.component'
-import { deleteJson, getJson } from '../services/request'
+import { requestDelete, requestGet } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import { computeCount } from '../common/utils/count'
@@ -43,7 +43,7 @@ const ArticlePage = () => {
   const [deleteModal, setDeleteModal] = useState(false)
 
   const onCreated = async (article_id: number) => {
-    const response: ArticleDetail = await getJson(`article/${article_id}`)
+    const response: ArticleDetail = await requestGet(`/article/${article_id}`)
     if (!response) navigate('/')
     setDetail(response)
   }
@@ -57,7 +57,7 @@ const ArticlePage = () => {
 
   const handleDelete = (encrypted: string) => async () => {
     const article_id = decryptAES(encrypted)
-    const response = await deleteJson(`article/${article_id}`)
+    const response = await requestDelete(`/article/${article_id}`)
     if (response) {
       toast.success('삭제되었습니다.')
       return navigate('/')

@@ -3,4 +3,5 @@ export interface ResponseBase<T> {
   result: boolean
   data?: T
   message?: string
+  code?: number
 }

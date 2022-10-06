@@ -15,7 +15,7 @@ import { Box } from '@mui/system'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { postJson } from '../services/request'
+import { requestPost } from '../services/request'
 import { AuthState, deleteInfo } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
 import { toast } from '../common/utils/popup'
@@ -43,7 +43,7 @@ const Navigator = () => {
   }
 
   const handleLogout = async () => {
-    await postJson('/account/logout')
+    await requestPost('/account/logout')
     dispatch(deleteInfo())
     setAnchorEl(null)
     toast.success('로그아웃되었습니다.')

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { PAGE_LIMIT } from '../common/constants/page'
 import { toast } from '../common/utils/popup'
-import { getJson, postJson } from '../services/request'
+import { requestGet, requestPost } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 import Comment, { IComment } from './comment.component'
 import Confirm from './modals/confirm.modal'
@@ -26,7 +26,7 @@ const CommentList = ({ article_id }: Props) => {
   const [onlyOneUpdate, setOnlyOneUpdate] = useState(false)
 
   const getComments = async (page: number) => {
-    const response: IComment[] = await getJson(
+    const response: IComment[] = await requestGet(
       `/comment?article_id=${article_id}&page=${page}`
     )
     if (response) {
@@ -53,7 +53,7 @@ const CommentList = ({ article_id }: Props) => {
       return toast.error('댓글을 입력해주세요.')
     }
 
-    const response = await postJson('/comment', { article_id, content: commentTemp })
+    const response = await requestPost('/comment', { article_id, content: commentTemp })
     if (response) {
       toast.success('댓글이 작성되었습니다.')
       return window.location.reload()

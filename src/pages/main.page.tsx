@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Divider, Grid, List, ListItem, useMediaQuery } from '@mui/material'
 import Article, { IArticle } from '../components/article.component'
-import { getJson } from '../services/request'
+import { requestGet } from '../services/request'
 import SideBar from '../components/sidebar.component'
 import { PAGE_LIMIT } from '../common/constants/page'
 import { decryptAES } from '../common/utils/aes'
@@ -18,7 +18,7 @@ const MainPage = () => {
   const is_pc = useMediaQuery('(min-width: 900px)')
 
   const getArticles = async (page: number, tag?: string) => {
-    const response: IArticle[] = await getJson(
+    const response: IArticle[] = await requestGet(
       `/article?page=${page}` +
         ((tag && `&tag=${tag}`) || '') +
         ((encrypted_account_id && `&id=${decryptAES(encrypted_account_id)}`) || '')

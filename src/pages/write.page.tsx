@@ -16,7 +16,7 @@ import AddLinkIcon from '@mui/icons-material/AddLink'
 import { toast } from '../common/utils/popup'
 import Confirm from '../components/modals/confirm.modal'
 import { useNavigate } from 'react-router-dom'
-import { formJson, getJson, patchJson, postJson } from '../services/request'
+import { requestForm, requestGet, requestPatch, requestPost } from '../services/request'
 import { load } from '../common/utils/loading'
 import Tag from '../components/tag.component'
 import { useSelector } from 'react-redux'
@@ -89,7 +89,7 @@ const WritePage = () => {
         load.start()
         const file = new FormData()
         file.append('image', image)
-        const response = await formJson('/upload', file)
+        const response = await requestForm('/upload', file)
         if (response) {
           setContent(content + '\n' + `![${Date()}](${response})  ` + '\n')
         }
@@ -135,12 +135,12 @@ const WritePage = () => {
     }
     const body = { title, tags, content }
     if (articleId) {
-      const response = await patchJson(`/article/${articleId}`, body)
+      const response = await requestPatch(`/article/${articleId}`, body)
       if (response) {
         navigate(`/article?id=${encryptAES(`${articleId}`)}`)
       }
     } else {
-      const response = await postJson('/article', body)
+      const response = await requestPost('/article', body)
       if (response) {
         navigate(`/`)
       }
@@ -148,7 +148,7 @@ const WritePage = () => {
   }
 
   const onCreated = async (article_id: number) => {
-    const response: ArticleDetail = await getJson(`article/${article_id}`)
+    const response: ArticleDetail = await requestGet(`article/${article_id}`)
     if (!response || response.account_id !== id) {
       toast.error('권한이 없습니다.')
       navigate('/')
