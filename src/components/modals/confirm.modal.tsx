@@ -22,8 +22,18 @@ const Confirm = ({ open, message, onClose, fn, content }: Props) => {
     return onClose()
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!e.nativeEvent.isComposing) {
+      if (e.code === 'Enter') {
+        e.preventDefault()
+        fn()
+        return onClose()
+      }
+    }
+  }
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog onKeyDown={handleKeyDown} open={open} onClose={onClose}>
       <DialogTitle>{message}</DialogTitle>
       {content && (
         <DialogContent>

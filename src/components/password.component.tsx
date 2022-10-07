@@ -28,8 +28,10 @@ const Password = ({ state, set, label = 'Password', error = false, enter }: Prop
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter' && enter) {
-      enter()
+    if (!e.nativeEvent.isComposing) {
+      if (e.code === 'Enter' && enter) {
+        enter()
+      }
     }
   }
 
