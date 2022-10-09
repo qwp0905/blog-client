@@ -70,12 +70,9 @@ const executeRequest = async (method: string, url: string, body?: any, headers?:
 }
 
 const refreshToken = async () => {
-  const { data } = await axios.post(
+  const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
-    {
-      id: store.getState().authSlice.id,
-      refresh_token: store.getState().authSlice.refresh_token
-    }
+    { headers: { Authorization: `Bearer ${store.getState().authSlice.refresh_token}` } }
   )
 
   const { result, data: real_data }: ResponseBase<any> = data
