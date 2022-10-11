@@ -69,6 +69,10 @@ const ArticlePage = () => {
 
   useEffect(() => {
     const article_id = decryptAES(encrypted_article_id)
+    if (!+article_id) {
+      toast.error('존재하지 않는 게시물입니다.')
+      return navigate('/')
+    }
     onCreated(+article_id)
   }, [])
 

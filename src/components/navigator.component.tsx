@@ -54,7 +54,7 @@ const Navigator = () => {
     <Box>
       <AppBar position="fixed" color="inherit" sx={{ zIndex: 3 }}>
         <Box>
-          <Toolbar sx={{}}>
+          <Toolbar>
             <Grid container>
               <Grid item xs={0} lg={1} />
               <Grid item xs={6} lg={10}>

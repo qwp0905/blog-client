@@ -115,7 +115,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
           </Box>
         ) : null}
       </Box>
-      <Box mt={3} display="flex" alignItems="center">
+      <Box mt={3} mb={0.5} display="flex" alignItems="center">
         {update ? (
           <Box
             flexGrow={1}
