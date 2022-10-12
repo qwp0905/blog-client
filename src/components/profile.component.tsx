@@ -1,5 +1,6 @@
-import { Box, Stack } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { calculateDate } from '../common/utils/moment'
 import { requestGet } from '../services/request'
 
 interface Props {
@@ -28,12 +29,28 @@ const Profile = ({ account_id }: Props) => {
   }, [])
   return (
     (profile && (
-      <Box mt={1}>
-        <Stack>
-          <Box>{profile.nickname}</Box>
-          <Box>{profile.articles}</Box>
-          <Box>{profile.created_at + ''}</Box>
-        </Stack>
+      <Box mt={2}>
+        <Grid container>
+          <Grid item md={2} />
+          <Grid item xs={12} md={8}>
+            <Stack
+              spacing={1}
+              sx={{
+                padding: 2,
+                border: '1px solid',
+                borderColor: 'ButtonHighlight',
+                borderRadius: 1
+              }}
+            >
+              <Box>
+                <Typography variant="h4">{profile.nickname}</Typography>
+              </Box>
+              <Box pt={2}>작성한 글 {profile.articles}</Box>
+              <Box>가입 {calculateDate(profile.created_at)}</Box>
+            </Stack>
+          </Grid>
+          <Grid item md={2} />
+        </Grid>
       </Box>
     )) ||
     null

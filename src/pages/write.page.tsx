@@ -6,8 +6,11 @@ import {
   DialogContent,
   Grid,
   IconButton,
+  Input,
   InputBase,
   Stack,
+  Tab,
+  Tabs,
   TextField
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -24,6 +27,7 @@ import { AuthState } from '../store/slices/auth.slice'
 import { ArticleDetail } from './article.page'
 import { decryptAES, encryptAES } from '../common/utils/aes'
 import { Date } from '../common/utils/date'
+import Markdown from '../components/markdown.component'
 
 const WritePage = () => {
   const url = new URL(window.location.href)
@@ -41,6 +45,7 @@ const WritePage = () => {
   const [linkModal, setLinkModal] = useState(false)
   const [link, setLink] = useState('')
   const [articleId, setArticleId] = useState<number | null>(null)
+  const [mode, setMode] = useState('write')
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -121,6 +126,10 @@ const WritePage = () => {
     closeLinkModal()
   }
 
+  const handlePreview = (e: React.SyntheticEvent, newValue: string) => {
+    setMode(newValue)
+  }
+
   const submit = async () => {
     if (!title) {
       return toast.error('제목을 입력하세요.')
@@ -148,10 +157,10 @@ const WritePage = () => {
   }
 
   const onCreated = async (article_id: number) => {
-    const response: ArticleDetail = await requestGet(`article/${article_id}`)
+    const response: ArticleDetail = await requestGet(`/article/${article_id}`)
     if (!response || response.account_id !== id) {
       toast.error('권한이 없습니다.')
-      navigate('/')
+      return navigate('/')
     }
     setTitle(response.title)
     setTags(response.tags)
@@ -161,7 +170,7 @@ const WritePage = () => {
 
   useEffect(() => {
     if (!access_token) {
-      navigate('/')
+      return navigate('/')
     }
     if (encrypted_article_id) {
       const article_id = decryptAES(encrypted_article_id)
@@ -200,38 +209,64 @@ const WritePage = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1}>
-              <Grid item>
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  component="label"
-                  htmlFor="image-upload"
-                >
-                  <ImageIcon />
-                </IconButton>
-                <input id="image-upload" type="file" hidden onChange={handleImage} />
-              </Grid>
-              <Grid item>
-                <IconButton onClick={openLinkModal} size="small" color="inherit">
-                  <AddLinkIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-            <InputBase
-              placeholder="내용을 입력하세요."
-              onChange={handleContent}
-              value={content}
-              multiline
-              rows={20}
-              sx={{
-                padding: 2,
-                border: '1px solid',
-                borderColor: 'ButtonHighlight',
-                borderRadius: 1
-              }}
-              onKeyDown={tapKey}
-            />
+            <Box display="flex" justifyContent="space-between">
+              <Box>
+                <Tabs value={mode} onChange={handlePreview}>
+                  <Tab value="write" label="WRITE" />
+                  <Tab value="preview" label="PREVIEW" />
+                </Tabs>
+              </Box>
+              <Box display="flex">
+                <Box display="flex" alignItems="center" mr={1}>
+                  <IconButton
+                    size="small"
+                    color="inherit"
+                    component="label"
+                    htmlFor="image-upload"
+                  >
+                    <ImageIcon />
+                  </IconButton>
+                  <Input
+                    id="image-upload"
+                    type="file"
+                    sx={{ display: 'none' }}
+                    onChange={handleImage}
+                  />
+                </Box>
+                <Box display="flex" alignItems="center">
+                  <IconButton onClick={openLinkModal} size="small" color="inherit">
+                    <AddLinkIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Box>
+            {mode === 'write' ? (
+              <InputBase
+                placeholder="내용을 입력하세요."
+                onChange={handleContent}
+                value={content}
+                multiline
+                rows={20}
+                sx={{
+                  padding: 2,
+                  border: '1px solid',
+                  borderColor: 'ButtonHighlight',
+                  borderRadius: 1
+                }}
+                onKeyDown={tapKey}
+              />
+            ) : (
+              <Box
+                sx={{
+                  padding: 2,
+                  border: '1px solid',
+                  borderColor: 'ButtonHighlight',
+                  borderRadius: 1
+                }}
+              >
+                <Markdown content={content} />
+              </Box>
+            )}
             <Box display="flex" flexDirection="row-reverse">
               <Button variant="outlined" onClick={handleCancelModal}>
                 취소

@@ -27,7 +27,7 @@ const SideBar = ({ account_id }: Props) => {
   }, [])
 
   return (
-    <Box>
+    <Box mt={2}>
       <List>
         <ListItem disablePadding>
           <ListItemButton
