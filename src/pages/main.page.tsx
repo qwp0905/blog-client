@@ -42,8 +42,9 @@ const MainPage = () => {
   }
 
   const handleScroll = useCallback((): void => {
-    const { clientHeight } = document.getElementById('article_list') as HTMLElement
-    const { scrollHeight, scrollTop } = document.documentElement
+    const { clientHeight, scrollHeight, scrollTop } = document.getElementById(
+      'article_list'
+    ) as HTMLElement
 
     if (Math.round(scrollTop + clientHeight) >= scrollHeight) {
       setPage(page + 1)

@@ -61,8 +61,9 @@ const CommentList = ({ article_id }: Props) => {
   }
 
   const handleScroll = useCallback(() => {
-    const { clientHeight } = document.getElementById('comment-list') as HTMLElement
-    const { scrollHeight, scrollTop } = document.documentElement
+    const { clientHeight, scrollHeight, scrollTop } = document.getElementById(
+      'comment-list'
+    ) as HTMLElement
 
     if (Math.round(scrollTop + clientHeight) >= scrollHeight) {
       setPage(page + 1)
