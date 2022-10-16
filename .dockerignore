@@ -1,0 +1,9 @@
+node_modules
+.vscode
+.gitignore
+.git
+Dockerfile
+docker-compose.yml
+*.yaml
+.prettierrc
+.eslintrc.js

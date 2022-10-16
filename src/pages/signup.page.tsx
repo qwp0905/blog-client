@@ -101,7 +101,7 @@ const SignUpPage = () => {
   }
 
   const validateNickname = (nickname: string) => {
-    return !nickname.match(/^[0-9a-zA-Z]*$/)
+    return !nickname.match(/^[0-9a-zA-Zㄱ-힣]*$/)
   }
 
   const validatePassword = (password: string) => {

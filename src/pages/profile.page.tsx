@@ -35,7 +35,7 @@ const ProfilePage = () => {
   }
 
   const validateNickname = (nickname: string) => {
-    return !nickname.match(/^[0-9a-zA-Z]*$/)
+    return !nickname.match(/^[0-9a-zA-Zㄱ-힣]*$/)
   }
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
