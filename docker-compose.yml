@@ -10,3 +10,4 @@ services:
     image: web-client
     volumes:
       - ./src:/app/src
+    container_name: web-client

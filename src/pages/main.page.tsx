@@ -42,10 +42,10 @@ const MainPage = () => {
   }
 
   const handleScroll = useCallback((): void => {
-    const { innerHeight } = window
+    const { clientHeight } = document.getElementById('article_list') as HTMLElement
     const { scrollHeight, scrollTop } = document.documentElement
 
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (Math.round(scrollTop + clientHeight) >= scrollHeight) {
       setPage(page + 1)
     }
   }, [page])
@@ -71,7 +71,7 @@ const MainPage = () => {
           {is_pc ? <SideBar account_id={encrypted_account_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
-          <List>
+          <List id="article_list">
             {articles.map((e, i) => {
               return (
                 <Box key={i}>
