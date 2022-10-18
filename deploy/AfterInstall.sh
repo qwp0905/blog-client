@@ -11,7 +11,7 @@ sudo apt install -y docker.io
 cd ${BASE_PATH}
 
 sudo docker rm -f web-client
-sudo docker build -t web-client .
+sudo docker build -f Dockerfile.prod -t web-client .
 sudo docker run -d \
   -p 80:80 \
   -p 443:443 \
