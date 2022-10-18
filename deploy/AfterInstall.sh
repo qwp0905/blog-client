@@ -12,4 +12,10 @@ cd ${BASE_PATH}
 
 docker rm -f web-client
 docker build -t web-client .
-docker run -d -p 80:80 -p 443:443 --name web-client
+docker run -d \
+  -p 80:80 \
+  -p 443:443 \
+  --name web-client \
+  -v ./key.pem:/etc/key.pem \
+  -v ./cert.pem:/etc/cert.pem \
+  web-client
