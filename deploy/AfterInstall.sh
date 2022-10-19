@@ -16,6 +16,6 @@ sudo docker run -d \
   -p 80:80 \
   -p 443:443 \
   --name web-client \
-  -v ./key.pem:/etc/key.pem \
-  -v ./cert.pem:/etc/cert.pem \
+  -v ${BASE_PATH}/key.pem:/etc/key.pem \
+  -v ${BASE_PATH}/cert.pem:/etc/cert.pem \
   web-client
