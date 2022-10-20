@@ -19,3 +19,5 @@ sudo docker run -d \
   -v ${BASE_PATH}/key.pem:/etc/key.pem \
   -v ${BASE_PATH}/cert.pem:/etc/cert.pem \
   web-client
+
+sudo docker rmi $(sudo docker images -f dangling=true -q)
