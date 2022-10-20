@@ -19,3 +19,5 @@ sudo docker run -d \
   -v ${BASE_PATH}/key.pem:/etc/key.pem \
   -v ${BASE_PATH}/cert.pem:/etc/cert.pem \
   web-client
+
+sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
