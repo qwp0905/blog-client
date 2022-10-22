@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 배포 주소
-BASE_PATH="/home/ubuntu/deploy-test"
+BASE_PATH="/home/ubuntu/www"
 
 sudo apt-get update
 
