@@ -13,7 +13,6 @@ cd ${BASE_PATH}
 sudo docker pull qwp1216/blog-client
 
 sudo docker rm -f web-client
-# sudo docker build -f Dockerfile.prod -t web-client .
 sudo docker run -d \
   -p 80:80 \
   -p 443:443 \
