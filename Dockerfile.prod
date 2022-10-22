@@ -2,7 +2,7 @@ FROM node:16 AS build
 
 WORKDIR /origin
 
-COPY ./pacakage.json /origin
+COPY ./package.json /origin
 COPY ./package-lock.json /origin
 
 RUN npm ci
@@ -21,6 +21,8 @@ COPY --from=build /origin/build /app
 RUN rm /etc/nginx/conf.d/default.conf
 
 COPY ./nginx.conf /etc/nginx/conf.d
+COPY ./key.pem /etc/
+COPY ./cert.pem /etc/
 
 EXPOSE 80 443
 
