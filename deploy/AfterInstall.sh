@@ -18,6 +18,6 @@ sudo docker run -d \
   -p 80:80 \
   -p 443:443 \
   --name web-client \
-  web-client
+  qwp1216/blog-client
 
 sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
