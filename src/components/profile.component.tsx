@@ -11,6 +11,7 @@ interface Account {
   id: number
   nickname: string
   articles: number
+  introduction: string
   created_at: Date
 }
 
@@ -47,6 +48,7 @@ const Profile = ({ account_id }: Props) => {
               </Box>
               <Box pt={2}>작성한 글 {profile.articles}</Box>
               <Box>가입 {calculateDate(profile.created_at)}</Box>
+              <Box pt={3}>{profile.introduction}</Box>
             </Stack>
           </Grid>
           <Grid item md={2} />

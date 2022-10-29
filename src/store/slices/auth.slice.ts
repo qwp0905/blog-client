@@ -5,6 +5,7 @@ interface State {
   id?: number
   nickname?: string
   email?: string
+  introduction?: string
   access_token?: string
   refresh_token?: string
   created_at?: string

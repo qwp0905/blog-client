@@ -13,10 +13,12 @@ const ProfilePage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { nickname, email, access_token } = useSelector(AuthState)
+  const { nickname, email, access_token, introduction } = useSelector(AuthState)
 
   const [newNickname, setNewNickname] = useState(nickname)
   const [isValidNickname, setIsValidNickname] = useState(true)
+
+  const [newIntroduction, setIntroduction] = useState(introduction)
 
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -42,8 +44,17 @@ const ProfilePage = () => {
     setNewNickname(e.target.value)
   }
 
-  const handleProfile = async () => {
-    if (nickname !== newNickname || password || passwordConfirm) {
+  const handleIntroduction = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIntroduction(e.target.value)
+  }
+
+  const submitProfile = async () => {
+    if (
+      nickname !== newNickname ||
+      password ||
+      passwordConfirm ||
+      introduction !== newIntroduction
+    ) {
       if (!newNickname) {
         return toast.error('닉네임은 비워들 수 없습니다.')
       }
@@ -62,11 +73,12 @@ const ProfilePage = () => {
 
       const response = await requestPatch('/account', {
         nickname: newNickname !== nickname ? newNickname : undefined,
-        password: password ? password : undefined
+        password: password ? password : undefined,
+        introduction: newIntroduction ? newIntroduction : undefined
       })
 
       if (response) {
-        dispatch(updateInfo({ nickname: newNickname }))
+        dispatch(updateInfo({ nickname: newNickname, introduction: newIntroduction }))
         toast.success('변경되었습니다.')
         return navigate('/')
       }
@@ -100,6 +112,18 @@ const ProfilePage = () => {
           <Typography variant="h6">회원정보 수정</Typography>
         </Box>
         <Box>
+          <TextField
+            label="Introduction"
+            variant="outlined"
+            fullWidth
+            placeholder="소개를 입력해주세요."
+            multiline
+            rows={4}
+            value={newIntroduction}
+            onChange={handleIntroduction}
+          />
+        </Box>
+        <Box>
           <TextField value={email} label="Email" variant="outlined" disabled fullWidth />
         </Box>
         <Box>
@@ -130,7 +154,7 @@ const ProfilePage = () => {
         </Box>
         <Box display="flex" pt={4}>
           <Button
-            onClick={handleProfile}
+            onClick={submitProfile}
             fullWidth
             variant="contained"
             size="large"

@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Box, Divider, Grid, List, ListItem, Stack, useMediaQuery } from '@mui/material'
+import {
+  Box,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  Stack,
+  Typography,
+  useMediaQuery
+} from '@mui/material'
 import Article, { IArticle } from '../components/article.component'
 import { requestGet } from '../services/request'
 import SideBar from '../components/sidebar.component'
@@ -72,18 +81,24 @@ const MainPage = () => {
           {is_pc ? <SideBar account_id={encrypted_account_id} /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
-          <List id="article_list">
-            {articles.map((e, i) => {
-              return (
-                <Box key={i}>
-                  <ListItem>
-                    <Article article={e} />
-                  </ListItem>
-                  <Divider />
-                </Box>
-              )
-            })}
-          </List>
+          <Stack>
+            <Box paddingX={3} pt={4} pb={2}>
+              <Typography variant="h6"># {tag || '전체'}</Typography>
+            </Box>
+            <Divider />
+            <List id="article_list">
+              {articles.map((e, i) => {
+                return (
+                  <Box key={i}>
+                    <ListItem>
+                      <Article article={e} />
+                    </ListItem>
+                    <Divider />
+                  </Box>
+                )
+              })}
+            </List>
+          </Stack>
         </Grid>
         <Grid item md={2} />
       </Grid>
