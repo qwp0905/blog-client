@@ -35,7 +35,7 @@ const WritePage = () => {
 
   const navigate = useNavigate()
 
-  const { access_token, id } = useSelector(AuthState)
+  const { role, id } = useSelector(AuthState)
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -96,7 +96,7 @@ const WritePage = () => {
         file.append('image', image)
         const response = await requestForm('/upload', file)
         if (response) {
-          setContent(content + '\n' + `![${Date()}](${response})  ` + '\n')
+          setContent(`${content}\n![${Date()}](${response})  \n`)
         }
         load.end()
       }
@@ -169,7 +169,8 @@ const WritePage = () => {
   }
 
   useEffect(() => {
-    if (!access_token) {
+    if (!role || role !== 'admin') {
+      toast.error('권한이 없습니다.')
       return navigate('/')
     }
     if (encrypted_article_id) {

@@ -1,24 +1,17 @@
 import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { decryptAES, encryptAES } from '../common/utils/aes'
 import { requestGet } from '../services/request'
-
-interface Props {
-  account_id?: string
-}
 
 interface TagResponse {
   tag_name: string
   quantity: number
 }
 
-const SideBar = ({ account_id }: Props) => {
+const SideBar = () => {
   const [tags, setTags] = useState<TagResponse[]>([])
 
   const onCreated = async () => {
-    const response: TagResponse[] = await requestGet(
-      `/article/tags` + ((account_id && `?id=${decryptAES(account_id)}`) || '')
-    )
+    const response: TagResponse[] = await requestGet(`/article/tags`)
     setTags(response || [])
   }
 
@@ -30,12 +23,7 @@ const SideBar = ({ account_id }: Props) => {
     <Box mt={2}>
       <List>
         <ListItem disablePadding>
-          <ListItemButton
-            LinkComponent="a"
-            href={
-              `/` + ((account_id && `?id=${encryptAES(decryptAES(account_id))}`) || '')
-            }
-          >
+          <ListItemButton LinkComponent="a" href="/">
             <ListItemText
               primary={
                 (tags.length && `${tags[0].tag_name} (${tags[0].quantity})`) || `전체 (0)`
@@ -48,15 +36,7 @@ const SideBar = ({ account_id }: Props) => {
             <ListItem key={i} disablePadding>
               <ListItemButton
                 LinkComponent="a"
-                href={
-                  `/` +
-                  ((tag_name && `?tag=${tag_name}`) || '') +
-                  ((account_id &&
-                    `${(tag_name && `&`) || `?`}id=${encryptAES(
-                      decryptAES(account_id)
-                    )}`) ||
-                    '')
-                }
+                href={`/` + ((tag_name && `?tag=${tag_name}`) || '')}
               >
                 <ListItemText primary={`${tag_name} (${quantity})`} />
               </ListItemButton>

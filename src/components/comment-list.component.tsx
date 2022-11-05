@@ -44,6 +44,15 @@ const CommentList = ({ article_id }: Props) => {
     setCommentTemp(e.target.value)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!e.nativeEvent.isComposing) {
+      if (e.code === 'Tab') {
+        e.preventDefault()
+        setCommentTemp(commentTemp + '  ')
+      }
+    }
+  }
+
   const submitComment = async () => {
     if (!id) {
       return setCheckLoginModal(true)
@@ -92,6 +101,7 @@ const CommentList = ({ article_id }: Props) => {
           placeholder="댓글을 입력하세요."
           multiline
           rows={2}
+          onKeyDown={handleKeyDown}
           fullWidth
         />
         <Box display="flex" flexDirection="row-reverse">

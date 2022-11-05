@@ -13,17 +13,10 @@ import Article, { IArticle } from '../components/article.component'
 import { requestGet } from '../services/request'
 import SideBar from '../components/sidebar.component'
 import { PAGE_LIMIT } from '../common/constants/page'
-import { decryptAES } from '../common/utils/aes'
-import { toast } from '../common/utils/popup'
-import { useNavigate } from 'react-router-dom'
-import Profile from '../components/profile.component'
 
 const MainPage = () => {
   const url = new URL(window.location.href)
-  const encrypted_account_id = url.searchParams.get('id') as string
   const tag = url.searchParams.get('tag') as string
-
-  const navigate = useNavigate()
 
   const [articles, setArticles] = useState<IArticle[]>([])
   const [page, setPage] = useState(1)
@@ -32,15 +25,8 @@ const MainPage = () => {
   const is_pc = useMediaQuery('(min-width: 900px)')
 
   const getArticles = async (page: number) => {
-    if (encrypted_account_id && !+decryptAES(encrypted_account_id)) {
-      toast.error('존재하지 않는 유저입니다.')
-      return navigate('/')
-    }
-
     const response: IArticle[] = await requestGet(
-      `/article?page=${page}` +
-        ((tag && `&tag=${tag}`) || '') +
-        ((encrypted_account_id && `&id=${decryptAES(encrypted_account_id)}`) || '')
+      `/article?page=${page}` + ((tag && `&tag=${tag}`) || '')
     )
     if (response) {
       setArticles([...articles, ...response.slice(0, PAGE_LIMIT)])
@@ -75,10 +61,9 @@ const MainPage = () => {
 
   return (
     <Stack>
-      {encrypted_account_id && <Profile account_id={+decryptAES(encrypted_account_id)} />}
       <Grid container>
         <Grid item md={2}>
-          {is_pc ? <SideBar account_id={encrypted_account_id} /> : null}
+          {is_pc ? <SideBar /> : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <Stack>

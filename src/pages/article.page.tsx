@@ -9,7 +9,6 @@ import CommentList from '../components/comment-list.component'
 import Heart from '../components/heart.component'
 import Markdown from '../components/markdown.component'
 import Confirm from '../components/modals/confirm.modal'
-import Nickname from '../components/nickname.component'
 import Tag from '../components/tag.component'
 import View from '../components/view.component'
 import { requestDelete, requestGet, requestPatch } from '../services/request'
@@ -99,9 +98,6 @@ const ArticlePage = () => {
               </Box>
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
-                  <Box mr={1} display="flex" alignItems="center">
-                    <Nickname account_id={detail.account_id} nickname={detail.nickname} />
-                  </Box>
                   <Box display="flex" alignItems="center">
                     <Typography mr={1}>{calculateDate(detail.created_at)}</Typography>
                   </Box>

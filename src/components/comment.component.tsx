@@ -6,7 +6,6 @@ import { toast } from '../common/utils/popup'
 import { requestDelete, requestPatch } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
-import Nickname from './nickname.component'
 
 interface Props {
   comment: IComment
@@ -73,7 +72,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
       <Box display="flex" justifyContent="space-between">
         <Box display="flex">
           <Box mr={1} display="flex" alignItems="center">
-            <Nickname account_id={comment.account_id} nickname={comment.nickname} />
+            <Typography>{comment.nickname}</Typography>
           </Box>
           <Box display="flex" alignItems="center">
             <Typography>{calculateDate(comment.created_at)}</Typography>

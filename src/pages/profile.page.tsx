@@ -13,12 +13,10 @@ const ProfilePage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { nickname, email, access_token, introduction } = useSelector(AuthState)
+  const { nickname, email, role } = useSelector(AuthState)
 
   const [newNickname, setNewNickname] = useState(nickname)
   const [isValidNickname, setIsValidNickname] = useState(true)
-
-  const [newIntroduction, setIntroduction] = useState(introduction)
 
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -30,7 +28,7 @@ const ProfilePage = () => {
     return (
       !~password.search(/[a-zA-Z]/) ||
       !~password.search(/[0-9]/) ||
-      !~password.search(/[`~!@#$%^&*()-_=+]/) ||
+      !~password.search(/[`~\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/) ||
       password.length < 8 ||
       password.length > 24
     )
@@ -44,17 +42,8 @@ const ProfilePage = () => {
     setNewNickname(e.target.value)
   }
 
-  const handleIntroduction = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIntroduction(e.target.value)
-  }
-
   const submitProfile = async () => {
-    if (
-      nickname !== newNickname ||
-      password ||
-      passwordConfirm ||
-      introduction !== newIntroduction
-    ) {
+    if (nickname !== newNickname || password || passwordConfirm) {
       if (!newNickname) {
         return toast.error('닉네임은 비워들 수 없습니다.')
       }
@@ -73,12 +62,11 @@ const ProfilePage = () => {
 
       const response = await requestPatch('/account', {
         nickname: newNickname !== nickname ? newNickname : undefined,
-        password: password ? password : undefined,
-        introduction: newIntroduction ? newIntroduction : undefined
+        password: password ? password : undefined
       })
 
       if (response) {
-        dispatch(updateInfo({ nickname: newNickname, introduction: newIntroduction }))
+        dispatch(updateInfo({ nickname: newNickname }))
         toast.success('변경되었습니다.')
         return navigate('/')
       }
@@ -100,28 +88,16 @@ const ProfilePage = () => {
   }, [passwordConfirm])
 
   useEffect(() => {
-    if (!access_token) {
+    if (!role) {
       navigate('/')
     }
-  }, [access_token])
+  }, [role])
 
   return (
     <Box display="flex" justifyContent="center" pt={12}>
       <Stack spacing={2} minWidth={350}>
         <Box display="flex" justifyContent="center" mb={5}>
           <Typography variant="h6">회원정보 수정</Typography>
-        </Box>
-        <Box>
-          <TextField
-            label="Introduction"
-            variant="outlined"
-            fullWidth
-            placeholder="소개를 입력해주세요."
-            multiline
-            rows={4}
-            value={newIntroduction}
-            onChange={handleIntroduction}
-          />
         </Box>
         <Box>
           <TextField value={email} label="Email" variant="outlined" disabled fullWidth />

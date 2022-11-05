@@ -24,7 +24,7 @@ const Navigator = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { access_token } = useSelector(AuthState)
+  const { role } = useSelector(AuthState)
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
@@ -52,12 +52,13 @@ const Navigator = () => {
 
   return (
     <Box>
+      <Box mt={8} />
       <AppBar position="fixed" color="inherit" sx={{ zIndex: 3 }}>
         <Box>
           <Toolbar>
             <Grid container>
-              <Grid item xs={0} lg={1} />
-              <Grid item xs={6} lg={10}>
+              <Grid item xs={0} lg={2} />
+              <Grid item xs={6} lg={8}>
                 <Box display="flex" justifyContent="center">
                   <Typography
                     variant="h6"
@@ -72,12 +73,12 @@ const Navigator = () => {
                     component="a"
                     href="/"
                   >
-                    블로그
+                    Kwonjin's Blog
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={6} lg={1} display="flex" flexDirection="row-reverse">
-                {!access_token ? (
+              <Grid item xs={6} lg={2} display="flex" flexDirection="row-reverse">
+                {!role ? (
                   <Button color="inherit" LinkComponent="a" href="/login">
                     Login
                   </Button>
@@ -86,15 +87,25 @@ const Navigator = () => {
                     <IconButton size="small" color="inherit" onClick={handleMenu}>
                       <AccountCircle />
                     </IconButton>
-                    <IconButton
-                      LinkComponent="a"
-                      href="/write"
-                      size="small"
-                      color="inherit"
+                    <Button
                       sx={{ mr: 0.8 }}
+                      color="inherit"
+                      LinkComponent="a"
+                      href="/about"
                     >
-                      <CreateIcon />
-                    </IconButton>
+                      About
+                    </Button>
+                    {role === 'admin' ? (
+                      <IconButton
+                        LinkComponent="a"
+                        href="/write"
+                        size="small"
+                        color="inherit"
+                        sx={{ mr: 0.8 }}
+                      >
+                        <CreateIcon />
+                      </IconButton>
+                    ) : null}
                   </Grid>
                 )}
               </Grid>
@@ -117,7 +128,6 @@ const Navigator = () => {
           fn={handleLogout}
         />
       </AppBar>
-      <Box mt={8} />
     </Box>
   )
 }

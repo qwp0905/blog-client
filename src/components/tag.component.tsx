@@ -6,28 +6,26 @@ interface Props {
   clickable?: boolean
 }
 
-const Tag = ({ tag, size = 'mn', clickable = false }: Props) => {
-  let font_size: number
-  let padding_left_right: number
-  let height: number
-
-  switch (size) {
-    case 'xs':
-      font_size = 12
-      padding_left_right = 0.5
-      height = 22
-      break
-    case 'lg':
-      font_size = 18
-      padding_left_right = 1.2
-      height = 22
-      break
-    default:
-      font_size = 15
-      padding_left_right = 0.9
-      height = 25
-      break
+const size_map = {
+  xs: {
+    font_size: 12,
+    padding_left_right: 0.5,
+    height: 22
+  },
+  mn: {
+    font_size: 15,
+    padding_left_right: 0.9,
+    height: 25
+  },
+  lg: {
+    font_size: 18,
+    padding_left_right: 1.2,
+    height: 22
   }
+}
+
+const Tag = ({ tag, size = 'mn', clickable = false }: Props) => {
+  const { font_size, padding_left_right, height } = size_map[size]
 
   return (
     <Box

@@ -1,7 +1,6 @@
 import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
 import { encryptAES } from '../common/utils/aes'
 import { calculateDate } from '../common/utils/moment'
-import Nickname from './nickname.component'
 import Tag from './tag.component'
 import View from './view.component'
 import Heart from './heart.component'
@@ -56,9 +55,6 @@ const Article = ({ article }: Props) => {
         <Box display="flex" mt={1}>
           <Box display="flex" alignItems="center">
             <Typography sx={{ mr: 2 }}>{calculateDate(article.created_at)}</Typography>
-          </Box>
-          <Box sx={{ mr: 2 }} display="flex" alignItems="center">
-            <Nickname account_id={article.account_id} nickname={article.nickname} />
           </Box>
           <View count={article.views} />
           <Heart count={article.heart} article_id={article.id} />
