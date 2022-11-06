@@ -28,7 +28,7 @@ const ProfilePage = () => {
     return (
       !~password.search(/[a-zA-Z]/) ||
       !~password.search(/[0-9]/) ||
-      !~password.search(/[`~\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/) ||
+      !~password.search(/[\`\~\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/) ||
       password.length < 8 ||
       password.length > 24
     )
@@ -53,7 +53,9 @@ const ProfilePage = () => {
       }
 
       if (password && validatePassword(password)) {
-        return toast.error('비밀번호는 8자 이상으로 입력해주세요.')
+        return toast.error(
+          '비밀번호는 8자 이상 24자 이하로 영문, 숫자, 특수기호가 포함되어야 합니다.'
+        )
       }
 
       if (password !== passwordConfirm) {

@@ -60,10 +60,10 @@ const executeRequest = async (method: string, url: string, body?: any, headers?:
       }
       toast.error(message)
       return null
+    } else {
+      toast.error(message)
+      return null
     }
-
-    toast.error(message)
-    return null
   } catch (err: any) {
     return toast.error(err.message)
   }

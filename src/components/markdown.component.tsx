@@ -26,20 +26,39 @@ const Markdown = ({ content }: Props) => {
               {...props}
             />
           ) : (
-            <span {...props} className={className}>
-              <Typography
-                component="span"
-                bgcolor="ButtonHighlight"
-                color="primary"
-                padding={0.3}
-              >
-                {children}
-              </Typography>
-            </span>
+            <Typography
+              component="span"
+              bgcolor="ButtonHighlight"
+              color="primary"
+              padding={0.3}
+              {...props}
+              className={className}
+            >
+              {children}
+            </Typography>
           )
         },
         img: ({ src, ...props }) => {
           return <img style={{ maxWidth: '100%' }} src={src} {...props} />
+        },
+        a: ({ children, href, ...props }) => {
+          return (
+            <Typography
+              component="a"
+              href={href}
+              sx={{
+                ':hover': {
+                  cursor: 'pointer',
+                  opacity: 0.7
+                },
+                textDecoration: 'none',
+                color: 'primary'
+              }}
+              {...props}
+            >
+              {children}
+            </Typography>
+          )
         }
       }}
     />
