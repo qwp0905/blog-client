@@ -16,4 +16,4 @@ sudo docker run -d \
 
 sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
 
-rm -rf ${BASE_PATH}/deploy/AfterInstall.sh
+sudo rm -rf ${BASE_PATH}/deploy/AfterInstall.sh
