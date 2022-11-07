@@ -15,3 +15,5 @@ sudo docker run -d \
   qwp1216/blog-client
 
 sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
+
+rm -rf ${BASE_PATH}/deploy/AfterInstall.sh
