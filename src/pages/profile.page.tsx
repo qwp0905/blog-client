@@ -28,7 +28,7 @@ const ProfilePage = () => {
     return (
       !~password.search(/[a-zA-Z]/) ||
       !~password.search(/[0-9]/) ||
-      !~password.search(/[\`\~\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/) ||
+      !~password.search(/[`~!@#$%^&*\\-_=+]/) ||
       password.length < 8 ||
       password.length > 24
     )
