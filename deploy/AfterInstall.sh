@@ -5,10 +5,9 @@ BASE_PATH="/home/ubuntu/www"
 
 cd ${BASE_PATH}
 
-sudo docker pull qwp1216/blog-client
-
 sudo docker rm -f web-client
 sudo docker run -d \
+  --pull "always" \
   -p 80:80 \
   -p 443:443 \
   --name web-client \
