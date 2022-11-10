@@ -21,8 +21,8 @@ COPY --from=build /origin/build /app
 RUN rm /etc/nginx/conf.d/default.conf
 
 COPY ./nginx.conf /etc/nginx/conf.d
-COPY ./key.pem /etc/
-COPY ./cert.pem /etc/
+COPY ./private.key /etc/ssl/
+COPY ./cert.crt /etc/ssl/
 
 EXPOSE 80 443
 
