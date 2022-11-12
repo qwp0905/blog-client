@@ -35,6 +35,8 @@ const request = async (method: string, url: string, body?: any, headers?: any) =
     data: body,
     headers: {
       ...headers,
+      'Access-Control-Allow-Origin': '*',
+      withCredentials: true,
       Authorization: `Bearer ${store.getState().authSlice.access_token}`
     }
   })
@@ -72,7 +74,13 @@ const executeRequest = async (method: string, url: string, body?: any, headers?:
 const refreshToken = async () => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
-    { headers: { Authorization: `Bearer ${store.getState().authSlice.refresh_token}` } }
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        withCredentials: true,
+        Authorization: `Bearer ${store.getState().authSlice.refresh_token}`
+      }
+    }
   )
 
   const { result, data: real_data }: ResponseBase<any> = data
