@@ -59,6 +59,13 @@ const Markdown = ({ content }: Props) => {
               {children}
             </Typography>
           )
+        },
+        hr: ({ ...props }) => {
+          return (
+            <Box display="flex" justifyContent="center">
+              <hr style={{ width: '97%' }} {...props} />
+            </Box>
+          )
         }
       }}
     />
