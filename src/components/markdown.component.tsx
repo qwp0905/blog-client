@@ -3,7 +3,7 @@ import ReactMarkDown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 
 interface Props {
   content: string
@@ -58,13 +58,6 @@ const Markdown = ({ content }: Props) => {
             >
               {children}
             </Typography>
-          )
-        },
-        hr: ({ ...props }) => {
-          return (
-            <Box display="flex" justifyContent="center">
-              <hr style={{ width: '97%' }} {...props} />
-            </Box>
           )
         }
       }}

@@ -82,19 +82,8 @@ const ArticlePage = () => {
         <Grid item xs={12} md={6}>
           {(detail && (
             <Stack spacing={1}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography fontSize={50}>{detail.title}</Typography>
-                <Box display="flex">
-                  <View count={detail.views} />
-                  <Box display="flex" alignItems="center">
-                    <IconButton disabled sx={{ mr: -0.7 }}>
-                      <CommentOutlinedIcon color="inherit" fontSize="small" />
-                    </IconButton>
-                    <Typography color="GrayText" fontSize="small">
-                      {computeCount(detail.comments)}
-                    </Typography>
-                  </Box>
-                </Box>
+              <Box>
+                <Typography fontSize={32}>{detail.title}</Typography>
               </Box>
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
@@ -108,7 +97,30 @@ const ArticlePage = () => {
                     size="medium"
                   />
                 </Box>
-                {id === detail.account_id ? (
+                <Box display="flex">
+                  <View count={detail.views} />
+                  <Box display="flex" alignItems="center">
+                    <IconButton disabled sx={{ mr: -0.7 }}>
+                      <CommentOutlinedIcon color="inherit" fontSize="small" />
+                    </IconButton>
+                    <Typography color="GrayText" fontSize="small">
+                      {computeCount(detail.comments)}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Grid container pt={1} pb={1}>
+                {detail.tags.map((tag, i) => {
+                  return (
+                    <Grid item mr={1} mb={1} key={i}>
+                      <Tag tag={tag} clickable />
+                    </Grid>
+                  )
+                })}
+              </Grid>
+              <Divider />
+              {id === detail.account_id ? (
+                <Box display="flex" flexDirection="row-reverse">
                   <Box display="flex">
                     <Box
                       component="a"
@@ -141,27 +153,17 @@ const ArticlePage = () => {
                       sx={{ display: 'none' }}
                     />
                   </Box>
-                ) : (
-                  <Box />
-                )}
-              </Box>
-              <Grid container pt={1} pb={1}>
-                {detail.tags.map((tag, i) => {
-                  return (
-                    <Grid item mr={1} mb={1} key={i}>
-                      <Tag tag={tag} clickable />
-                    </Grid>
-                  )
-                })}
-              </Grid>
-              <Divider />
-              <Box pt={5} pb={5}>
+                </Box>
+              ) : (
+                <Box />
+              )}
+              <Box padding={2}>
                 <Markdown content={detail.content} />
               </Box>
               <Divider />
               <CommentList article_id={detail.id} />
             </Stack>
-          )) || <Box></Box>}
+          )) || <Box />}
         </Grid>
         <Grid item md={3} />
       </Grid>

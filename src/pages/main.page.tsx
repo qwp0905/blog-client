@@ -63,7 +63,11 @@ const MainPage = () => {
     <Stack>
       <Grid container>
         <Grid item md={2}>
-          {is_pc ? <SideBar /> : null}
+          {is_pc ? (
+            <Box mt={2}>
+              <SideBar />
+            </Box>
+          ) : null}
         </Grid>
         <Grid item xs={12} md={8}>
           <Stack>
