@@ -148,13 +148,13 @@ const WritePage = () => {
     if (articleId) {
       const response = await requestPatch(`/article/${articleId}`, body)
       if (response) {
-        toast.success('작성이 완료되었습니다.')
+        toast.success('수정이 완료되었습니다.')
         return navigate(`/article?id=${encryptAES(`${articleId}`)}`)
       }
     } else {
       const response = await requestPost('/article', body)
       if (response) {
-        toast.success('수정이 완료되었습니다.')
+        toast.success('작성이 완료되었습니다.')
         return navigate(`/`)
       }
     }
