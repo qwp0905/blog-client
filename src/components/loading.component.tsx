@@ -2,6 +2,7 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { LoadingState } from '../store/slices/loading.slice'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const Loading = () => {
   const { is_loading } = useSelector(LoadingState)
@@ -17,10 +18,8 @@ export const Loading = () => {
       zIndex={4}
       sx={{ opacity: 0.6 }}
     >
-      ...loading
+      <CircularProgress />
     </Box>
-  ) : (
-    <></>
-  )
+  ) : null
 }
 export default Loading

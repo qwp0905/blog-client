@@ -142,16 +142,20 @@ const WritePage = () => {
     if (!content) {
       return toast.error('내용을 입력하세요.')
     }
+
     const body = { title, tags, content }
+
     if (articleId) {
       const response = await requestPatch(`/article/${articleId}`, body)
       if (response) {
-        navigate(`/article?id=${encryptAES(`${articleId}`)}`)
+        toast.success('작성이 완료되었습니다.')
+        return navigate(`/article?id=${encryptAES(`${articleId}`)}`)
       }
     } else {
       const response = await requestPost('/article', body)
       if (response) {
-        navigate(`/`)
+        toast.success('수정이 완료되었습니다.')
+        return navigate(`/`)
       }
     }
   }
