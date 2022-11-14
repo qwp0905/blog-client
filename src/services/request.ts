@@ -76,7 +76,6 @@ const refreshToken = async () => {
     `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
     {
       headers: {
-        'Access-Control-Allow-Origin': '*',
         withCredentials: true,
         Authorization: `Bearer ${store.getState().authSlice.refresh_token}`
       }
