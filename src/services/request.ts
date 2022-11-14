@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { RequestMethod } from '../@types/http'
 import { ResponseBase } from '../common/interfaces/http.interface'
 import { toast } from '../common/utils/popup'
 import { store } from '../store'
@@ -28,22 +29,25 @@ export const requestForm = (url: string, data: FormData) => {
   return executeRequest('post', url, data, { 'Content-Type': 'multipart/form-data' })
 }
 
-const request = async (method: string, url: string, body?: any, headers?: any) => {
+const request = async (method: RequestMethod, url: string, body?: any, headers?: any) => {
   const { data } = await axios.request({
     method,
     url: process.env.REACT_APP_SERVER_HOST + url,
     data: body,
     headers: {
       ...headers,
-      'Access-Control-Allow-Origin': '*',
-      withCredentials: true,
       Authorization: `Bearer ${store.getState().authSlice.access_token}`
     }
   })
   return data as ResponseBase<any>
 }
 
-const executeRequest = async (method: string, url: string, body?: any, headers?: any) => {
+const executeRequest = async (
+  method: RequestMethod,
+  url: string,
+  body?: any,
+  headers?: any
+) => {
   try {
     const { code, result, message, data } = await request(method, url, body, headers)
 
@@ -76,17 +80,16 @@ const refreshToken = async () => {
     `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
     {
       headers: {
-        withCredentials: true,
         Authorization: `Bearer ${store.getState().authSlice.refresh_token}`
       }
     }
   )
 
-  const { result, data: real_data }: ResponseBase<any> = data
+  const { result, data: token }: ResponseBase<any> = data
   if (!result) {
     store.dispatch(deleteInfo())
     throw new Error('다시 로그인해주세요')
   }
 
-  return real_data
+  return token
 }
