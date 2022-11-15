@@ -47,6 +47,7 @@ const Navigator = () => {
   }
 
   const handleProfile = () => {
+    setAnchorEl(null)
     navigate('/profile')
   }
 
@@ -71,6 +72,7 @@ const Navigator = () => {
   const openSideBar = () => {
     setSideBarModal(true)
   }
+
   const closeSideBar = () => {
     setSideBarModal(false)
   }
@@ -130,12 +132,14 @@ const Navigator = () => {
               anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
               onClose={() => setAnchorEl(null)}
             >
-              {role === 'admin' ? <MenuItem onClick={handleWrite}>Write</MenuItem> : null}
-              {role ? <MenuItem onClick={handleProfile}>Profile</MenuItem> : null}
+              {role === 'admin' ? (
+                <MenuItem onClick={handleWrite}>글 작성</MenuItem>
+              ) : null}
+              {role ? <MenuItem onClick={handleProfile}>프로필</MenuItem> : null}
               {role ? (
-                <MenuItem onClick={handleLogoutModal}>Logout</MenuItem>
+                <MenuItem onClick={handleLogoutModal}>로그아웃</MenuItem>
               ) : (
-                <MenuItem onClick={handleLogin}>Login</MenuItem>
+                <MenuItem onClick={handleLogin}>로그인</MenuItem>
               )}
             </Menu>
           </Toolbar>

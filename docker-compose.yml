@@ -9,4 +9,6 @@ services:
       - 3000:3000
     volumes:
       - ./src:/app/src
+      - ./.env:/app/.env
+      - ./.env.development:/app/.env.development
     container_name: web-client
