@@ -32,6 +32,7 @@ sudo docker run -d \
                 -p ${PORT}:80 \
                 --pull=always \
                 --restart=unless-stopped \
+                qwp1216/blog-client
 
 sleep 10
 
