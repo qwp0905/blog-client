@@ -43,8 +43,8 @@ if [ -z "$REQUEST" ]; then
   sudo docker rm -f web-client-${CURRENT}
   exit 1
 else
-  sudo docker stop web-client-${BEFORE}
-  sudo docker rm web-client-${BEFORE}
+  sudo docker stop web-client-${PREVIOUS}
+  sudo docker rm web-client-${PREVIOUS}
 fi
 
 sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
