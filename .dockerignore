@@ -7,3 +7,4 @@ docker-compose.yml
 *.yaml
 .prettierrc
 .eslintrc.js
+deploy
