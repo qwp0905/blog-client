@@ -16,4 +16,4 @@ docker login -u qwp1216 -p ${DOCKER_PWD}
 docker push qwp1216/blog-client
 docker push qwp1216/blog-client-proxy
 
-sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
+docker images --quiet --filter=dangling=true | xargs --no-run-if-empty docker rmi
