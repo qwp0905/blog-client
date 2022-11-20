@@ -25,7 +25,7 @@ else
   PORT="8081"
 fi
 
-sudo docker rm -f web-client-${PREVIOUS}
+sudo docker rm -f web-client-${CURRENT}
 
 sudo docker run -d \
                 --name web-client-${CURRENT} \
