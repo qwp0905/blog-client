@@ -1,6 +1,7 @@
 #!/bin/bash
 
 HOST=host.docker.internal
+NGINX_CONF=/etc/nginx/nginx.conf
 
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
   sudo docker rm -f proxy
@@ -19,13 +20,19 @@ if [ -z "$(sudo docker ps | grep blue)" ]; then
   CURRENT="blue"
   PREVIOUS="green"
   PORT="8080"
+  PREV_PORT="8081"
 else
   CURRENT="green"
   PREVIOUS="blue"
   PORT="8081"
+  PREV_PORT="8080"
 fi
 
 sudo docker rm -f web-client-${CURRENT}
+
+sudo docker exec proxy \
+  sed -i "s/${HOST}:${PORT} down/${HOST}:${PORT}/" ${NGINX_CONF}
+
 
 sudo docker run -d \
                 --name web-client-${CURRENT} \
@@ -40,7 +47,12 @@ if [ -z "$(curl -I localhost:${PORT} |& grep HTTP)" ]; then
   sudo docker rm -f web-client-${CURRENT}
   exit 1
 else
-  sudo docker stop web-client-${PREVIOUS}
+  sudo docker exec proxy \
+    sed -i "s/${HOST}:${PREV_PORT}/${HOST}:${PREV_PORT} down/" ${NGINX_CONF}
+  sudo docker exec proxy \
+    nginx -s reload
+
+  sudo docker stop -t 10 web-client-${PREVIOUS}
   sudo docker rm web-client-${PREVIOUS}
 fi
 
