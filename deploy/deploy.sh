@@ -30,10 +30,6 @@ fi
 
 sudo docker rm -f web-client-${CURRENT}
 
-sudo docker exec proxy \
-  sed -i "s/${HOST}:${PORT} down/${HOST}:${PORT}/" ${NGINX_CONF}
-
-
 sudo docker run -d \
                 --name web-client-${CURRENT} \
                 -p ${PORT}:80 \
@@ -47,6 +43,8 @@ if [ -z "$(curl -I localhost:${PORT} |& grep HTTP)" ]; then
   sudo docker rm -f web-client-${CURRENT}
   exit 1
 else
+  sudo docker exec proxy \
+    sed -i "s/${HOST}:${PORT} down/${HOST}:${PORT}/" ${NGINX_CONF}
   sudo docker exec proxy \
     sed -i "s/${HOST}:${PREV_PORT}/${HOST}:${PREV_PORT} down/" ${NGINX_CONF}
   sudo docker exec proxy \
