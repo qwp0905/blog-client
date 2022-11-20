@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cp ${KEY} .
+cp ${CERT} .
+cp ${ENV} .
+
 docker build --platform linux/amd64 \
             -t qwp1216/blog-client \
             -f Dockerfile.prod .
