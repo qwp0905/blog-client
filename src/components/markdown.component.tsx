@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactMarkDown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 interface Props {
   content: string
@@ -16,26 +14,29 @@ const Markdown = ({ content }: Props) => {
       remarkPlugins={[remarkGfm]}
       components={{
         code: ({ inline, className, children, ...props }) => {
-          const match = /language-(\w+)/.exec(className || '')
-          return !inline && match ? (
-            <SyntaxHighlighter
-              children={String(children).replace(/\n$/, '')}
-              style={a11yDark as any}
-              language={match[1]}
-              PreTag="span"
-              {...props}
-            />
-          ) : (
+          return inline ? (
             <Typography
               component="span"
               bgcolor="ButtonHighlight"
-              color="primary"
+              color="inherit"
               padding={0.3}
               {...props}
               className={className}
             >
               {children}
             </Typography>
+          ) : (
+            <Box
+              sx={{
+                bgcolor: 'rgb(50,50,50)',
+                borderRadius: 1,
+                paddingX: 2,
+                color: 'white',
+                paddingY: 3
+              }}
+            >
+              <code>{children}</code>
+            </Box>
           )
         },
         img: ({ src, ...props }) => {
