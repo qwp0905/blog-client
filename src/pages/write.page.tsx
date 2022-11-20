@@ -63,7 +63,7 @@ const WritePage = () => {
     if (!e.nativeEvent.isComposing) {
       if (e.code === 'Enter') {
         e.preventDefault()
-        if (tag_temp && tag_temp.match(/^[0-9a-zA-Zㄱ-힣]*$/)) {
+        if (tag_temp) {
           setTags(Array.from(new Set([...tags, tag_temp])))
           setTagTemp('')
         }
