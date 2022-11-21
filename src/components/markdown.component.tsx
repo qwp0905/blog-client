@@ -32,10 +32,14 @@ const Markdown = ({ content }: Props) => {
                 borderRadius: 1,
                 paddingX: 2,
                 color: 'white',
-                paddingY: 3
+                paddingY: 3,
+                maxWidth: '100%',
+                overflow: 'auto'
               }}
             >
-              <code>{children}</code>
+              <code className={className} {...props}>
+                {children}
+              </code>
             </Box>
           )
         },
