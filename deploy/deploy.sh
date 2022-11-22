@@ -1,7 +1,8 @@
 #!/bin/bash
 
-HOST=host.docker.internal
-NGINX_CONF=/etc/nginx/nginx.conf
+HOST="host.docker.internal"
+NGINX_CONF="/etc/nginx/nginx.conf"
+DOCKER_REGISTRY="qwp1216/blog-client"
 
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
   sudo docker rm -f proxy
@@ -13,7 +14,7 @@ if [ -z "$(sudo docker ps | grep proxy)" ]; then
                   -v /home/ubuntu/log:/var/log/nginx/ \
                   -p 80:80 \
                   -p 443:443 \
-                  qwp1216/blog-client-proxy:latest
+                  ${DOCKER_REGISTRY}-proxy:latest
 fi
 
 if [ -z "$(sudo docker ps | grep blue)" ]; then
@@ -35,7 +36,7 @@ sudo docker run -d \
                 -p ${PORT}:80 \
                 --pull=always \
                 --restart=unless-stopped \
-                qwp1216/blog-client:latest
+                ${DOCKER_REGISTRY}:latest
 
 sleep 10
 
