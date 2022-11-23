@@ -78,7 +78,9 @@ const WritePage = () => {
     if (!e.nativeEvent.isComposing) {
       if (e.code === 'Tab') {
         e.preventDefault()
-        setContent(content + '  ')
+        const start = e.currentTarget.selectionStart as number
+        const end = e.currentTarget.selectionEnd as number
+        setContent(content.slice(0, start) + '    ' + content.slice(end, content.length))
       }
     }
   }
