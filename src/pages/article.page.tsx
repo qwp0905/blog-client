@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { decryptAES, encryptAES } from '../common/utils/aes'
@@ -41,14 +41,17 @@ const ArticlePage = () => {
   const [detail, setDetail] = useState<ArticleDetail | null>(null)
   const [deleteModal, setDeleteModal] = useState(false)
 
-  const onCreated = async (article_id: number) => {
-    const response: ArticleDetail = await requestGet(`/article/${article_id}`)
-    if (!response) navigate('/')
-    setDetail(response)
-    if (id) {
-      await requestPatch(`/article/lookup/${article_id}`)
-    }
-  }
+  const onCreated = useCallback(
+    async (article_id: number) => {
+      const response: ArticleDetail = await requestGet(`/article/${article_id}`)
+      if (!response) navigate('/')
+      setDetail(response)
+      if (id) {
+        await requestPatch(`/article/lookup/${article_id}`)
+      }
+    },
+    [id, navigate]
+  )
 
   const handleDeleteModal = () => {
     if (detail?.account_id !== id) {
@@ -73,7 +76,7 @@ const ArticlePage = () => {
       return navigate('/')
     }
     onCreated(+article_id)
-  }, [])
+  }, [encrypted_article_id, navigate, onCreated])
 
   return (
     <Box pt={5} display="flex" justifyContent="center">

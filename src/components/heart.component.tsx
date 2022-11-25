@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../store/slices/auth.slice'
 import Confirm from './modals/confirm.modal'
 import { computeCount } from '../common/utils/count'
+import { useCallback } from 'react'
 
 interface Props {
   article_id: number
@@ -26,10 +27,10 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
   const [heartCount, setHeartCount] = useState(count)
   const [checkLoginModal, setCheckLoginModal] = useState(false)
 
-  const checkHeart = async () => {
+  const checkHeart = useCallback(async () => {
     const response: boolean = await requestGet(`/heart/${article_id}`)
     setIsHeart(response)
-  }
+  }, [article_id])
 
   const handleCount = async () => {
     if (!access_token) {
@@ -48,7 +49,7 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
     if (clickable && access_token) {
       checkHeart()
     }
-  }, [])
+  }, [access_token, clickable, checkHeart])
 
   return (
     <Box display="flex" alignItems="center">

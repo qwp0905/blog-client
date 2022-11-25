@@ -87,13 +87,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     setIsSamePassword(password !== passwordConfirm)
-  }, [passwordConfirm])
+  }, [passwordConfirm, password])
 
   useEffect(() => {
     if (!role) {
       navigate('/')
     }
-  }, [role])
+  }, [role, navigate])
 
   return (
     <Box display="flex" justifyContent="center" pt={12}>

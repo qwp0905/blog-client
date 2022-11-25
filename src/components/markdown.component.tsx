@@ -43,8 +43,8 @@ const Markdown = ({ content }: Props) => {
             </Box>
           )
         },
-        img: ({ src, ...props }) => {
-          return <img style={{ maxWidth: '100%' }} src={src} {...props} />
+        img: ({ src, alt, ...props }) => {
+          return <img style={{ maxWidth: '100%' }} src={src} alt={alt || ''} {...props} />
         },
         a: ({ children, href, ...props }) => {
           return (

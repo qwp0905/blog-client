@@ -52,7 +52,7 @@ const LoginPage = () => {
     if (access_token) {
       navigate('/')
     }
-  }, [access_token])
+  }, [access_token, navigate])
 
   return (
     <Box display="flex" justifyContent="center" pt={12}>

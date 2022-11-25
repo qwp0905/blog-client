@@ -24,17 +24,20 @@ const MainPage = () => {
 
   const is_pc = useMediaQuery('(min-width: 900px)')
 
-  const getArticles = async (page: number) => {
-    const response: IArticle[] = await requestGet(
-      `/article?page=${page}` + ((tag && `&tag=${tag}`) || '')
-    )
-    if (response) {
-      setArticles([...articles, ...response.slice(0, PAGE_LIMIT)])
-      if (response.length < PAGE_LIMIT) {
-        setScrollEnd(true)
+  const getArticles = useCallback(
+    async (page: number) => {
+      const response: IArticle[] = await requestGet(
+        `/article?page=${page}` + ((tag && `&tag=${tag}`) || '')
+      )
+      if (response) {
+        setArticles([...articles, ...response.slice(0, PAGE_LIMIT)])
+        if (response.length < PAGE_LIMIT) {
+          setScrollEnd(true)
+        }
       }
-    }
-  }
+    },
+    [articles, tag]
+  )
 
   const handleScroll = useCallback((): void => {
     const { clientHeight, scrollHeight, scrollTop } = document.getElementById(
@@ -51,13 +54,13 @@ const MainPage = () => {
       window.addEventListener('scroll', handleScroll, true)
       return () => window.removeEventListener('scroll', handleScroll, true)
     }
-  }, [])
+  }, [handleScroll, scrollEnd])
 
   useEffect(() => {
     if (!scrollEnd) {
       getArticles(page)
     }
-  }, [page])
+  }, [page, getArticles, scrollEnd])
 
   return (
     <Stack>

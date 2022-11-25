@@ -25,17 +25,20 @@ const CommentList = ({ article_id }: Props) => {
   const [checkLoginModal, setCheckLoginModal] = useState(false)
   const [onlyOneUpdate, setOnlyOneUpdate] = useState(false)
 
-  const getComments = async (page: number) => {
-    const response: IComment[] = await requestGet(
-      `/comment?article_id=${article_id}&page=${page}`
-    )
-    if (response) {
-      setComments([...comments, ...response.slice(0, PAGE_LIMIT)])
-      if (response.length < PAGE_LIMIT) {
-        setScrollEnd(true)
+  const getComments = useCallback(
+    async (page: number) => {
+      const response: IComment[] = await requestGet(
+        `/comment?article_id=${article_id}&page=${page}`
+      )
+      if (response) {
+        setComments([...comments, ...response.slice(0, PAGE_LIMIT)])
+        if (response.length < PAGE_LIMIT) {
+          setScrollEnd(true)
+        }
       }
-    }
-  }
+    },
+    [article_id, comments]
+  )
 
   const handleComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!id) {
@@ -94,13 +97,13 @@ const CommentList = ({ article_id }: Props) => {
       window.addEventListener('scroll', handleScroll, true)
       return () => window.removeEventListener('scroll', handleScroll, true)
     }
-  }, [])
+  }, [handleScroll, scrollEnd])
 
   useEffect(() => {
     if (!scrollEnd) {
       getComments(page)
     }
-  }, [page])
+  }, [getComments, page, scrollEnd])
 
   return (
     <Stack id="comment-list">

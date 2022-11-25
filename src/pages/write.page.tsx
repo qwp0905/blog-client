@@ -13,7 +13,7 @@ import {
   Tabs,
   TextField
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ImageIcon from '@mui/icons-material/Image'
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import { toast } from '../common/utils/popup'
@@ -166,17 +166,20 @@ const WritePage = () => {
     }
   }
 
-  const onCreated = async (article_id: number) => {
-    const response: ArticleDetail = await requestGet(`/article/${article_id}`)
-    if (!response || response.account_id !== id) {
-      toast.error('권한이 없습니다.')
-      return navigate('/')
-    }
-    setTitle(response.title)
-    setTags(response.tags)
-    setContent(response.content)
-    setArticleId(response.id)
-  }
+  const onCreated = useCallback(
+    async (article_id: number) => {
+      const response: ArticleDetail = await requestGet(`/article/${article_id}`)
+      if (!response || response.account_id !== id) {
+        toast.error('권한이 없습니다.')
+        return navigate('/')
+      }
+      setTitle(response.title)
+      setTags(response.tags)
+      setContent(response.content)
+      setArticleId(response.id)
+    },
+    [id, navigate]
+  )
 
   useEffect(() => {
     if (!role || role !== 'admin') {
@@ -187,7 +190,7 @@ const WritePage = () => {
       const article_id = decryptAES(encrypted_article_id)
       onCreated(+article_id)
     }
-  }, [])
+  }, [encrypted_article_id, onCreated, navigate, role])
 
   return (
     <Box pt={5}>
