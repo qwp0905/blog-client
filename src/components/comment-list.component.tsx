@@ -48,7 +48,17 @@ const CommentList = ({ article_id }: Props) => {
     if (!e.nativeEvent.isComposing) {
       if (e.code === 'Tab') {
         e.preventDefault()
-        setCommentTemp(commentTemp + '  ')
+        const start = e.currentTarget.selectionStart as number
+        const end = e.currentTarget.selectionEnd as number
+
+        setCommentTemp(
+          commentTemp.slice(0, start) +
+            '    ' +
+            commentTemp.slice(end, commentTemp.length)
+        )
+
+        e.currentTarget.setRangeText('    ')
+        e.currentTarget.setSelectionRange(start + 4, start + 4)
       }
     }
   }

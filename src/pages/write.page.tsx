@@ -80,7 +80,11 @@ const WritePage = () => {
         e.preventDefault()
         const start = e.currentTarget.selectionStart as number
         const end = e.currentTarget.selectionEnd as number
+
         setContent(content.slice(0, start) + '    ' + content.slice(end, content.length))
+
+        e.currentTarget.setRangeText('    ')
+        e.currentTarget.setSelectionRange(start + 4, start + 4)
       }
     }
   }

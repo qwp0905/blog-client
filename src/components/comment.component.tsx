@@ -33,6 +33,21 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
     setContent(e.target.value)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!e.nativeEvent.isComposing) {
+      if (e.code === 'Tab') {
+        e.preventDefault()
+        const start = e.currentTarget.selectionStart as number
+        const end = e.currentTarget.selectionEnd as number
+
+        setContent(content.slice(0, start) + '    ' + content.slice(end, content.length))
+
+        e.currentTarget.setRangeText('    ')
+        e.currentTarget.setSelectionRange(start + 4, start + 4)
+      }
+    }
+  }
+
   const handleUpdate = () => {
     if (!onlyOneUpdate) {
       setOnlyOneUpdate(true)
@@ -128,6 +143,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
               onChange={handleContent}
               multiline
               rows={2}
+              onKeyDown={handleKeyDown}
               fullWidth
             />
             <Box display="flex" flexDirection="row-reverse">
