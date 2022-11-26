@@ -21,7 +21,7 @@ const Markdown = ({ content }: Props) => {
               bgcolor="ButtonHighlight"
               color="inherit"
               padding={0.3}
-              letterSpacing={0.5}
+              letterSpacing={0.3}
               lineHeight={1.5}
               className={className}
             >
