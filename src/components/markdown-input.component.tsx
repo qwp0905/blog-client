@@ -18,10 +18,10 @@ const MarkdownInput = ({ state, setState, ...props }: Props) => {
         const start = e.currentTarget.selectionStart as number
         const end = e.currentTarget.selectionEnd as number
 
-        setState(state.slice(0, start) + '    ' + state.slice(end, state.length))
+        setState(state.slice(0, start) + '\t' + state.slice(end, state.length))
 
-        e.currentTarget.setRangeText('    ')
-        e.currentTarget.setSelectionRange(start + 4, start + 4)
+        e.currentTarget.setRangeText('\t')
+        e.currentTarget.setSelectionRange(start + 1, start + 1)
       }
     }
   }
