@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { requestPost } from '../services/request'
 import { AuthState, deleteInfo } from '../store/slices/auth.slice'
-import Confirm from './modals/confirm.modal'
+import ConfirmModal from './modals/confirm.modal'
 import { toast } from '../common/utils/popup'
 import SideBar from './sidebar.component'
 
@@ -144,13 +144,14 @@ const Navigator = () => {
             </Menu>
           </Toolbar>
         </Box>
-        <Confirm
+        <ConfirmModal
           open={logoutModal}
           onClose={() => setLogoutModal(false)}
           message="로그아웃 하시겠습니까?"
           fn={handleLogout}
         />
       </AppBar>
+
       <Dialog open={sideBarModal} onClose={closeSideBar} fullScreen>
         <Box display="flex" flexDirection="row-reverse" pr={1} pt={1}>
           <IconButton onClick={closeSideBar}>

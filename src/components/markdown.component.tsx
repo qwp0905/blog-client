@@ -16,11 +16,13 @@ const Markdown = ({ content }: Props) => {
         code: ({ inline, className, children, ...props }) => {
           return inline ? (
             <Typography
+              {...props}
               component="span"
               bgcolor="ButtonHighlight"
               color="inherit"
               padding={0.3}
-              {...props}
+              letterSpacing={0.5}
+              lineHeight={1.5}
               className={className}
             >
               {children}
@@ -34,7 +36,9 @@ const Markdown = ({ content }: Props) => {
                 color: 'white',
                 paddingY: 3,
                 maxWidth: '100%',
-                overflow: 'auto'
+                overflow: 'auto',
+                letterSpacing: 0.3,
+                lineHeight: 1.5
               }}
             >
               <code className={className} {...props}>
@@ -59,10 +63,19 @@ const Markdown = ({ content }: Props) => {
                 textDecoration: 'none',
                 color: 'primary'
               }}
+              letterSpacing={0.3}
+              lineHeight={1.5}
               {...props}
             >
               {children}
             </Typography>
+          )
+        },
+        p: ({ children, ...props }) => {
+          return (
+            <Box component="p" letterSpacing={0.3} lineHeight={1.5} {...props}>
+              {children}
+            </Box>
           )
         }
       }}

@@ -16,7 +16,7 @@ interface Props {
   fn: () => unknown
 }
 
-const Confirm = ({ open, message, onClose, fn, content }: Props) => {
+const ConfirmModal = ({ open, message, onClose, fn, content }: Props) => {
   const handleConfirm = () => {
     fn()
     return onClose()
@@ -47,4 +47,4 @@ const Confirm = ({ open, message, onClose, fn, content }: Props) => {
     </Dialog>
   )
 }
-export default Confirm
+export default ConfirmModal

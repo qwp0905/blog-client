@@ -5,7 +5,7 @@ import { calculateDate } from '../common/utils/moment'
 import { toast } from '../common/utils/popup'
 import { requestDelete, requestPatch } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
-import Confirm from './modals/confirm.modal'
+import ConfirmModal from './modals/confirm.modal'
 
 interface Props {
   comment: IComment
@@ -159,7 +159,7 @@ const Comment = ({ comment, onlyOneUpdate, setOnlyOneUpdate }: Props) => {
           <Typography>{content}</Typography>
         )}
       </Box>
-      <Confirm
+      <ConfirmModal
         open={deleteModal}
         message="정말 삭제하시겠습니까?"
         onClose={() => setDeleteModal(false)}

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { requestDelete, requestGet, requestPost } from '../services/request'
 import { useSelector } from 'react-redux'
 import { AuthState } from '../store/slices/auth.slice'
-import Confirm from './modals/confirm.modal'
+import ConfirmModal from './modals/confirm.modal'
 import { computeCount } from '../common/utils/count'
 import { useCallback } from 'react'
 
@@ -63,7 +63,7 @@ const Heart = ({ article_id, clickable = false, count, size = 'small' }: Props) 
       <Typography color="GrayText" fontSize={size}>
         {computeCount(heartCount)}
       </Typography>
-      <Confirm
+      <ConfirmModal
         open={checkLoginModal}
         onClose={() => setCheckLoginModal(false)}
         message="로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?"

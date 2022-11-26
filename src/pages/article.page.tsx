@@ -8,7 +8,7 @@ import { toast } from '../common/utils/popup'
 import CommentList from '../components/comment-list.component'
 import Heart from '../components/heart.component'
 import Markdown from '../components/markdown.component'
-import Confirm from '../components/modals/confirm.modal'
+import ConfirmModal from '../components/modals/confirm.modal'
 import Tag from '../components/tag.component'
 import View from '../components/view.component'
 import { requestDelete, requestGet, requestPatch } from '../services/request'
@@ -170,7 +170,7 @@ const ArticlePage = () => {
         </Grid>
         <Grid item md={3} />
       </Grid>
-      <Confirm
+      <ConfirmModal
         open={deleteModal}
         message="삭제하시겠습니까?"
         onClose={() => setDeleteModal(false)}

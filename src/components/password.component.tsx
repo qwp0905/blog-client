@@ -10,21 +10,27 @@ import React, { useState } from 'react'
 
 interface Props {
   state: string
-  set: React.Dispatch<React.SetStateAction<string>>
+  setState: React.Dispatch<React.SetStateAction<string>>
   enter?: () => unknown
   error?: boolean
   label?: string
 }
 
-const Password = ({ state, set, label = 'Password', error = false, enter }: Props) => {
+const Password = ({
+  state,
+  setState,
+  label = 'Password',
+  error = false,
+  enter
+}: Props) => {
   const [showPassword, setShowPassword] = useState(false)
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    set(e.target.value)
+    setState(e.target.value)
   }
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+  const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

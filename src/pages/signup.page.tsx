@@ -110,7 +110,7 @@ const SignUpPage = () => {
     return (
       !~password.search(/[a-zA-Z]/) ||
       !~password.search(/[0-9]/) ||
-      !~password.search(/[`~!@#$%^&*\\-_=+]/) ||
+      !~password.search(/[`~!@#$%^&*\\\-_=+(),./:;'"[\]{}|]/) ||
       password.length < 8 ||
       password.length > 24
     )
@@ -187,14 +187,14 @@ const SignUpPage = () => {
         <Box>
           <Password
             state={password}
-            set={setPassword}
+            setState={setPassword}
             error={isValidPassword && password !== ''}
           />
         </Box>
         <Box>
           <Password
             state={passwordConfirm}
-            set={setPasswordConfirm}
+            setState={setPasswordConfirm}
             label="Password Confirm"
             error={isSamePassword}
           />

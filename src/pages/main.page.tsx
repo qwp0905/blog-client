@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Box,
   Divider,
   Grid,
-  List,
   ListItem,
   Stack,
   Typography,
@@ -12,55 +11,22 @@ import {
 import Article, { IArticle } from '../components/article.component'
 import { requestGet } from '../services/request'
 import SideBar from '../components/sidebar.component'
-import { PAGE_LIMIT } from '../common/constants/page'
+import InfinityScrollList from '../components/infinity-scroll-list.component'
 
 const MainPage = () => {
   const url = new URL(window.location.href)
   const tag = url.searchParams.get('tag') as string
 
   const [articles, setArticles] = useState<IArticle[]>([])
-  const [page, setPage] = useState(1)
-  const [scrollEnd, setScrollEnd] = useState(false)
 
   const is_pc = useMediaQuery('(min-width: 900px)')
 
   const getArticles = useCallback(
     async (page: number) => {
-      const response: IArticle[] = await requestGet(
-        `/article?page=${page}` + ((tag && `&tag=${tag}`) || '')
-      )
-      if (response) {
-        setArticles([...articles, ...response.slice(0, PAGE_LIMIT)])
-        if (response.length < PAGE_LIMIT) {
-          setScrollEnd(true)
-        }
-      }
+      return await requestGet(`/article?page=${page}` + ((tag && `&tag=${tag}`) || ''))
     },
-    [articles, tag]
+    [tag]
   )
-
-  const handleScroll = useCallback((): void => {
-    const { clientHeight, scrollHeight, scrollTop } = document.getElementById(
-      'article_list'
-    ) as HTMLElement
-
-    if (Math.round(scrollTop + clientHeight) >= scrollHeight) {
-      setPage(page + 1)
-    }
-  }, [page])
-
-  useEffect(() => {
-    if (!scrollEnd) {
-      window.addEventListener('scroll', handleScroll, true)
-      return () => window.removeEventListener('scroll', handleScroll, true)
-    }
-  }, [handleScroll, scrollEnd])
-
-  useEffect(() => {
-    if (!scrollEnd) {
-      getArticles(page)
-    }
-  }, [page, getArticles, scrollEnd])
 
   return (
     <Stack>
@@ -78,7 +44,7 @@ const MainPage = () => {
               <Typography variant="h6"># {tag || '전체'}</Typography>
             </Box>
             <Divider />
-            <List id="article_list">
+            <InfinityScrollList setList={setArticles} getItems={getArticles}>
               {articles.map((e, i) => {
                 return (
                   <Box key={i}>
@@ -89,7 +55,7 @@ const MainPage = () => {
                   </Box>
                 )
               })}
-            </List>
+            </InfinityScrollList>
           </Stack>
         </Grid>
         <Grid item md={2} />
