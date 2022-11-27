@@ -36,6 +36,7 @@ const request = async (method: RequestMethod, url: string, body?: any, headers?:
     data: body,
     headers: {
       ...headers,
+      'X-Account-Origin': `${store.getState().authSlice.origin}`,
       Authorization: `Bearer ${store.getState().authSlice.access_token}`
     }
   })
@@ -80,6 +81,7 @@ const refreshToken = async () => {
     `${process.env.REACT_APP_SERVER_HOST}/account/refresh`,
     {
       headers: {
+        'X-Account-Origin': `${store.getState().authSlice.origin}`,
         Authorization: `Bearer ${store.getState().authSlice.refresh_token}`
       }
     }

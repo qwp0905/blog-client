@@ -1,17 +1,30 @@
-import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Grid,
+  // IconButton,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { AccountOrigin, AccountRole } from '../@types/account'
 import { toast } from '../common/utils/popup'
 import Password from '../components/password.component'
 import { requestPost } from '../services/request'
 import { AuthState, updateInfo } from '../store/slices/auth.slice'
+// import GitHubIcon from '@mui/icons-material/GitHub'
+// import { redirectToGithub } from '../services/social'
 
 interface ILoginResponse {
   id: number
   email: string
   nickname: string
+  role: AccountRole
+  origin: AccountOrigin
   created_at: string
   access_token: string
   refresh_token: string
@@ -93,6 +106,11 @@ const LoginPage = () => {
             </Box>
           </Grid>
         </Grid>
+        {/* <Box pt={1} display="flex" justifyContent="center" alignItems="center">
+          <IconButton onClick={redirectToGithub}>
+            <GitHubIcon fontSize="large" />
+          </IconButton>
+        </Box> */}
       </Stack>
     </Box>
   )

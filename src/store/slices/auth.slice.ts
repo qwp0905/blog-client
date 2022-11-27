@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '..'
-import { Role } from '../../@types/account'
+import { AccountOrigin, AccountRole } from '../../@types/account'
 
 interface State {
   id?: number
   nickname?: string
   email?: string
-  role?: Role
+  role?: AccountRole
+  origin?: AccountOrigin
   access_token?: string
   refresh_token?: string
   created_at?: string
