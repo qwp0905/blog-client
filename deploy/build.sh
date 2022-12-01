@@ -1,5 +1,6 @@
 #!/bin/bash
 
+DOCKER_REGISTRY="qwp1216/blog-client"
 COMMIT_HASH="$(git log -1 --format=%H | head -n 1)"
 
 cp ${KEY} .
