@@ -5,7 +5,8 @@ NGINX_CONF="/etc/nginx/nginx.conf"
 DOCKER_REGISTRY="qwp1216/blog-client"
 
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
-  sudo docker rm -f proxy
+  echo "Create nginx proxy..."
+  sudo docker ps -aqf name=proxy | sudo docker rm -f
   sudo docker run -d \
                   --name proxy \
                   --pull=always \
@@ -29,8 +30,8 @@ else
   PREV_PORT="8080"
 fi
 
-sudo docker rm -f web-client-${CURRENT}
-
+echo "Create server $CURRENT..."
+sudo docker ps -aqf name=web-client-${CURRENT} | sudo xargs --no-run-if-empty docker rm -f
 sudo docker run -d \
                 --name web-client-${CURRENT} \
                 -p ${PORT}:80 \
@@ -42,7 +43,9 @@ sleep 10
 
 for COUNT in {1..10}
 do
+  echo "$COUNT trying..."
   if [ -n "$(curl -sI localhost:${PORT} | grep HTTP)" ]; then
+    echo "$CURRUNT succeed"
     sudo docker exec proxy \
       sed -i "s/${HOST}:${PORT} down/${HOST}:${PORT}/" ${NGINX_CONF}
     sudo docker exec proxy \
@@ -53,7 +56,7 @@ do
     sudo docker stop -t 10 web-client-${PREVIOUS}
     sudo docker rm web-client-${PREVIOUS}
 
-    sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
+    sudo docker images -qf dangling=true | sudo xargs --no-run-if-empty docker rmi -f
     exit 0
   else
     sleep 3
@@ -61,6 +64,6 @@ do
 done
 
 sudo docker rm -f web-client-${CURRENT}
-sudo docker images --quiet --filter=dangling=true | sudo xargs --no-run-if-empty docker rmi
-
+sudo docker images -qf dangling=true | sudo xargs --no-run-if-empty docker rmi -f
+echo "Fail to start server..."
 exit 1
