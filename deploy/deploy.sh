@@ -6,7 +6,7 @@ DOCKER_REGISTRY="qwp1216/blog-client"
 
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
   echo "Create nginx proxy..."
-  sudo docker ps -aqf name=proxy | sudo docker rm -f
+  sudo docker ps -aqf name=proxy | sudo xargs --no-run-if-empty docker rm -f
   sudo docker run -d \
                   --name proxy \
                   --pull=always \
