@@ -3,6 +3,8 @@
 HOST="host.docker.internal"
 NGINX_CONF="/etc/nginx/nginx.conf"
 
+echo "$DOCKER_REGISTRY $IMAGE_TAG version..."
+
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
   echo "Create nginx proxy..."
   sudo docker ps -aqf name=proxy | sudo xargs --no-run-if-empty docker rm -f
