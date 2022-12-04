@@ -2,7 +2,6 @@
 
 HOST="host.docker.internal"
 NGINX_CONF="/etc/nginx/nginx.conf"
-DOCKER_REGISTRY="qwp1216/blog-client"
 
 if [ -z "$(sudo docker ps | grep proxy)" ]; then
   echo "Create nginx proxy..."
@@ -15,7 +14,7 @@ if [ -z "$(sudo docker ps | grep proxy)" ]; then
                   -v /home/ubuntu/log:/var/log/nginx/ \
                   -p 80:80 \
                   -p 443:443 \
-                  ${DOCKER_REGISTRY}-proxy:latest
+                  ${DOCKER_REGISTRY}-proxy:${IMAGE_TAG}
 fi
 
 if [ -z "$(sudo docker ps | grep blue)" ]; then
@@ -37,7 +36,7 @@ sudo docker run -d \
                 -p ${PORT}:80 \
                 --pull=always \
                 --restart=unless-stopped \
-                ${DOCKER_REGISTRY}:latest
+                ${DOCKER_REGISTRY}:${IMAGE_TAG}
 
 sleep 10
 
@@ -57,6 +56,14 @@ do
     sudo docker rm web-client-${PREVIOUS}
 
     sudo docker images -qf dangling=true | sudo xargs --no-run-if-empty docker rmi -f
+
+    sudo docker images -qf reference=${DOCKER_REGISTRY} \
+                       -f before=${DOCKER_REGISTRY}:${IMAGE_TAG} \
+    | sudo xargs --no-run-if-empty docker rmi -f
+    sudo docker images -qf reference=${DOCKER_REGISTRY} \
+                       -f since=${DOCKER_REGISTRY}:${IMAGE_TAG} \
+    | sudo xargs --no-run-if-empty docker rmi -f
+
     exit 0
   else
     sleep 3
@@ -65,5 +72,7 @@ done
 
 sudo docker rm -f web-client-${CURRENT}
 sudo docker images -qf dangling=true | sudo xargs --no-run-if-empty docker rmi -f
+sudo docker rmi -f ${DOCKER_REGISTRY}:${IMAGE_TAG}
+
 echo "Fail to start server..."
 exit 1
