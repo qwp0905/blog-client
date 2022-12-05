@@ -1,4 +1,13 @@
-import { Box, Button, Divider, Grid, IconButton, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+  useMediaQuery
+} from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -15,6 +24,7 @@ import { requestDelete, requestGet, requestPatch } from '../services/request'
 import { AuthState } from '../store/slices/auth.slice'
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import { computeCount } from '../common/utils/count'
+import SideBar from '../components/sidebar.component'
 
 export interface ArticleDetail {
   id: number
@@ -40,6 +50,8 @@ const ArticlePage = () => {
 
   const [detail, setDetail] = useState<ArticleDetail | null>(null)
   const [deleteModal, setDeleteModal] = useState(false)
+
+  const is_pc = useMediaQuery('(min-width: 900px)')
 
   const onCreated = useCallback(
     async (article_id: number) => {
@@ -79,12 +91,18 @@ const ArticlePage = () => {
   }, [encrypted_article_id, navigate, onCreated])
 
   return (
-    <Box pt={5} display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center">
       <Grid container>
-        <Grid item md={3} />
-        <Grid item xs={12} md={6}>
+        <Grid item md={2}>
+          {is_pc ? (
+            <Box mt={2}>
+              <SideBar />
+            </Box>
+          ) : null}
+        </Grid>
+        <Grid item xs={12} md={8}>
           {(detail && (
-            <Stack spacing={1}>
+            <Stack spacing={1} pt={5}>
               <Box>
                 <Typography fontSize={32}>{detail.title}</Typography>
               </Box>
@@ -168,7 +186,7 @@ const ArticlePage = () => {
             </Stack>
           )) || <Box />}
         </Grid>
-        <Grid item md={3} />
+        <Grid item md={2} />
       </Grid>
       <ConfirmModal
         open={deleteModal}

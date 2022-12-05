@@ -84,7 +84,7 @@ const Navigator = () => {
         <Box>
           <Toolbar>
             <Grid container>
-              <Grid item xs={3} lg={2}>
+              <Grid item xs={2} lg={2}>
                 {is_pc ? null : (
                   <IconButton onClick={openSideBar}>
                     <MenuIcon />
@@ -110,18 +110,19 @@ const Navigator = () => {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={4} lg={2} display="flex" flexDirection="row-reverse">
+              <Grid item xs={5} lg={2} display="flex" flexDirection="row-reverse">
                 <Grid container flexDirection="row-reverse">
                   <IconButton size="small" color="inherit" onClick={handleMenu}>
                     <AccountCircle />
                   </IconButton>
                   <Button
-                    sx={{ mr: 0.5 }}
+                    sx={{ mr: 0.3, textTransform: 'none' }}
                     color="inherit"
                     LinkComponent="a"
-                    href="/about"
+                    href="/intro"
+                    size="small"
                   >
-                    About
+                    Intro
                   </Button>
                 </Grid>
               </Grid>

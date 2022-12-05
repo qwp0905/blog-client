@@ -12,7 +12,7 @@ interface Profile {
   content: string
 }
 
-const AboutPage = () => {
+const IntroPage = () => {
   const { role } = useSelector(AuthState)
 
   const [edit, setEdit] = useState<boolean>(false)
@@ -98,4 +98,4 @@ const AboutPage = () => {
   )
 }
 
-export default AboutPage
+export default IntroPage

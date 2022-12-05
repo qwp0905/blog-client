@@ -9,7 +9,8 @@ import SignUpPage from './pages/signup.page'
 import ArticlePage from './pages/article.page'
 import WritePage from './pages/write.page'
 import ProfilePage from './pages/profile.page'
-import AboutPage from './pages/about.page'
+import IntroPage from './pages/intro.page'
+import NotFoundPage from './pages/404.page'
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
           <Route path="/article" element={<ArticlePage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/intro" element={<IntroPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
       <Popup />
