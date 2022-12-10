@@ -77,6 +77,9 @@ const Markdown = ({ content }: Props) => {
               {children}
             </Box>
           )
+        },
+        hr: () => {
+          return <Box paddingY={3} />
         }
       }}
     />
