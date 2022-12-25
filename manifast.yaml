@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: qwp1216/blog-client:latest
+          imagePullPolicy: Always
+          ports:
+            - name: client-port
+              containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: ClusterIP
+  ports:
+    - name: client-cluster
+      protocol: TCP
+      port: 8080
+      targetPort: client-port
+  selector:
+    app: client
