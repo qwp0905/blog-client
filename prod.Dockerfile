@@ -5,7 +5,7 @@ WORKDIR /origin
 COPY ./package.json /origin
 COPY ./package-lock.json /origin
 
-RUN npm ci
+RUN npm ci --silent
 
 COPY . /origin
 
