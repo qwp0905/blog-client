@@ -1,4 +1,4 @@
-name: server
+name: client
 namespace: default
 port: 80
 servicePort: 8081
