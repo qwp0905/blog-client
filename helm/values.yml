@@ -1,0 +1,13 @@
+name: server
+namespace: default
+port: 80
+servicePort: 8081
+cpu: 1000m
+memory: 1Gi
+ingress:
+  enabled: false
+  group: public
+  dns: blog.kwonjin.click
+autoscaling:
+  enabled: true
+  maxReplicas: 10
