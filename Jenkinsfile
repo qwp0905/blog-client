@@ -54,7 +54,7 @@ pipeline {
     stage('Build & Push') {
       steps {
         container('helm') {
-          sh('kubectl get cm $APP -o jsonpath={.data.env} > .env')
+          sh('kubectl get cm $APP -n default -o jsonpath={.data.env} > .env')
         }
 
         container('docker') {
