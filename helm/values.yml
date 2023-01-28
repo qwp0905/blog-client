@@ -6,7 +6,7 @@ cpu: 1000m
 memory: 1Gi
 ingress:
   enabled: true
-  group: public
+  group: Public
   dns: blog.kwonjin.click
 autoscaling:
   enabled: true
