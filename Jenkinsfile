@@ -76,13 +76,13 @@ pipeline {
 
   post {
     success {
-      slackSend(channel: 'testtest', color: 'good', message: "Success $MESSAGE")
+      slackSend(channel: 'testtest', color: 'good', message: "[Success] $MESSAGE")
     }
     failure {
-      slackSend(channel: 'testtest', color: 'danger', message: "Failed $MESSAGE")
+      slackSend(channel: 'testtest', color: 'danger', message: "[Failed] $MESSAGE")
     }
     unstable {
-      slackSend(channel: 'testtest', color: 'warning', message: "Unstable $MESSAGE")
+      slackSend(channel: 'testtest', color: 'warning', message: "[Unstable] $MESSAGE")
     }
   }
 }
