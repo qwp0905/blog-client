@@ -5,7 +5,7 @@ servicePort: 8081
 cpu: 1000m
 memory: 1Gi
 ingress:
-  enabled: false
+  enabled: true
   group: public
   dns: blog.kwonjin.click
 autoscaling:
