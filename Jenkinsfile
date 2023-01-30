@@ -52,8 +52,8 @@ pipeline {
         }
 
         container('docker') {
-          sh('docker build --platform linux/amd64 -f prod.Dockerfile -t $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH .')
-          sh('docker push $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH')
+          sh('docker build --platform linux/amd64 -f prod.Dockerfile -t ${AWS_ECR_REGISTRY}/$APP:$COMMIT_HASH .')
+          sh('docker push ${AWS_ECR_REGISTRY}/$APP:$COMMIT_HASH')
         }
       }
     }
