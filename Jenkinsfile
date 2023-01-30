@@ -6,10 +6,11 @@ pipeline {
   }
 
   environment {
-    APP            = 'blog-client'
-    COMMIT_HASH    = "${sh(returnStdout: true, script: 'git log -1 --format=%H | head -n 1')}"
-    COMMIT_MESSAGE = "${sh(returnStdout: true, script: 'git log -1 --pretty=%B | head -n 1')}"
-    MESSAGE        = "$JOB_NAME#$BUILD_NUMBER\n$COMMIT_MESSAGE\n$BUILD_URL"
+    APP              = 'blog-client'
+    AWS_ECR_REGISTRY = credentials('aws-ecr-registry')
+    COMMIT_HASH      = "${sh(returnStdout: true, script: 'git log -1 --format=%H | head -n 1')}"
+    COMMIT_MESSAGE   = "${sh(returnStdout: true, script: 'git log -1 --pretty=%B | head -n 1')}"
+    MESSAGE          = "$JOB_NAME#$BUILD_NUMBER\n$COMMIT_MESSAGE\n$BUILD_URL"
   }
 
   stages {
@@ -52,8 +53,8 @@ pipeline {
         }
 
         container('docker') {
-          sh('docker build --platform linux/amd64 -f prod.Dockerfile -t ${AWS_ECR_REGISTRY}/$APP:$COMMIT_HASH .')
-          sh('docker push ${AWS_ECR_REGISTRY}/$APP:$COMMIT_HASH')
+          sh('docker build --platform linux/amd64 -f prod.Dockerfile -t $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH .')
+          sh('docker push $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH')
         }
       }
     }
