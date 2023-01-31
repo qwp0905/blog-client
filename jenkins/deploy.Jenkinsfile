@@ -4,7 +4,7 @@ pipeline {
   parameters { 
     string(
       name: 'DEPLOY_TAG',
-      defaultValue: "${sh(returnStdout: true, script: 'git log -1 --format=%H | head -n 1')}",
+      defaultValue: "",
       description: 'Deploy tag'
     )
   }
