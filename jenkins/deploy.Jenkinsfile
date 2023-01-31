@@ -45,15 +45,11 @@ pipeline {
       }
     }
 
-    stage('Build & Push') {
+    stage('Deploy') {
       steps {
         container('helm') {
-          sh('kubectl get cm $APP -n default -o jsonpath={.data.env} > .env')
-        }
-
-        container('docker') {
-          sh('docker build --platform linux/amd64 -f prod.Dockerfile -t $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH .')
-          sh('docker push $AWS_ECR_REGISTRY/$APP:$COMMIT_HASH')
+          sh('echo "image: $AWS_ECR_REGISTRY/$APP:$DEPLOY_TAG" >> helm/values.yml')
+          sh('helm upgrade --install $APP oci://$AWS_ECR_REGISTRY/service-helm -f helm/values.yml -n default')
         }
       }
     }
