@@ -21,6 +21,7 @@ pipeline {
       parallel {
         stage('Set Build Name') {
           steps {
+            sh('git switch --detach $DEPLOY_TAG')
             buildName("[$BUILD_NUMBER] $COMMIT_MESSAGE")
           }
         }
@@ -47,8 +48,6 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh('git switch --detach $DEPLOY_TAG')
-
         container('helm') {
           sh('echo "image: $AWS_ECR_REGISTRY/$APP:$DEPLOY_TAG" >> helm/values.yml')
           sh('helm upgrade --install $APP oci://$AWS_ECR_REGISTRY/service-helm -f helm/values.yml -n default')
