@@ -64,9 +64,9 @@ pipeline {
     success {
       slackSend(channel: 'testtest', color: 'good', message: "[Success] $MESSAGE")
       build(
-        job: '(Deploy) $APP',
+        job: "(Deploy) $APP",
         wait: false,
-        parameters: [string(name: 'DEPLOY_TAG', value: '$COMMIT_HASH')]
+        parameters: [string(name: 'DEPLOY_TAG', value: "$COMMIT_HASH")]
       )
     }
     failure {
