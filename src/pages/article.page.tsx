@@ -59,7 +59,7 @@ const ArticlePage = () => {
       if (!response) navigate('/')
       setDetail(response)
       if (id && response.account_id !== id) {
-        await requestPatch(`/article/lookup/${article_id}`)
+        await requestPatch(`/article/${article_id}/view`)
       }
     },
     [id, navigate]
