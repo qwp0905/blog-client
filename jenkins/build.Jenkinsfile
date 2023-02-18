@@ -3,5 +3,6 @@
 buildPipeline(
   name: 'blog-client',
   dockerfile: 'prod.Dockerfile',
-  buildConfig: 'blog-client'
+  buildConfig: 'blog-client',
+  buildConfigKey: 'env'
 )
