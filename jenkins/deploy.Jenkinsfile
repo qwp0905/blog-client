@@ -1,3 +1,3 @@
 @Library('common') _
 
-deployPipeline('blog-client')
+deployPipeline(name: 'blog-client')

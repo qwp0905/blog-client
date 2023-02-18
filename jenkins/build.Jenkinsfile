@@ -1,3 +1,7 @@
 @Library('common') _
 
-buildPipeline('blog-client', 'prod.Dockerfile', 'blog-client')
+buildPipeline(
+  name: 'blog-client',
+  dockerfile: 'prod.Dockerfile',
+  buildConfig: 'blog-client'
+)
