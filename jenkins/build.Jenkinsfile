@@ -5,6 +5,6 @@ buildPipeline(
   dockerfile: 'prod.Dockerfile',
   buildConfig: 'blog-client',
   buildConfigKey: 'env',
-  manifestUrl: 'git@github.com:qwp0905/kubernetes.git',
+  manifestRepo: 'git@github.com:qwp0905/kubernetes.git',
   manifestDir: 'blog-client/values.yml'
 )
