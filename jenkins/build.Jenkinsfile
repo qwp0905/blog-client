@@ -6,5 +6,5 @@ buildPipeline(
   buildConfig: 'blog-client',
   buildConfigKey: 'env',
   manifestRepo: 'git@github.com:qwp0905/kubernetes.git',
-  manifestDir: 'blog-client/values.yml'
+  manifestDir: 'applications/blog-client.yaml'
 )
