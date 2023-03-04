@@ -7,21 +7,12 @@ import loadingSlice from './slices/loading.slice'
 
 const reducers = combineReducers({ authSlice, popupSlice, loadingSlice })
 
-const persistedReducer = persistReducer(
-  {
-    key: 'root',
-    version: 1,
-    storage
-  },
-  reducers
-)
+const persistedReducer = persistReducer({ key: 'root', version: 1, storage }, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware(getDefaultMiddleware) {
-    return getDefaultMiddleware({
-      serializableCheck: false
-    })
+    return getDefaultMiddleware({ serializableCheck: false })
   },
   devTools: process.env.NODE_ENV === 'development',
   enhancers: (defaultEnhacers) => [...defaultEnhacers]
